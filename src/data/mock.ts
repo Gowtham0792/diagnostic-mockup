@@ -11,7 +11,7 @@ export const dms = {
   memory: { active: 1, inactive: 3 },
   ecuData: [
     { label: 'ECU Type', value: 'iABS Premium' },
-    { label: 'Device Part Number' },
+    { label: 'Device Part Number', value: '400 500 530 0' },
     { label: 'Production date' },
     { label: 'Software Version' },
     { label: 'Part Number (ECU)' },
