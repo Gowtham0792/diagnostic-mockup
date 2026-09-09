@@ -23,7 +23,7 @@ export default function DmsOverview() {
       {/* Blue app bar */}
       <div className="flex shrink-0 items-center gap-3 px-4 py-2 text-white" style={{ background: ZF_BLUE }}>
         <Menu className="h-5 w-5" />
-        <span className="grid h-6 w-6 place-items-center rounded-sm bg-white p-0.5">
+        <span className="grid h-7 w-7 place-items-center rounded-full bg-white p-0.5">
           <img src={zfLogo} alt="ZF" className="h-full w-full" />
         </span>
         <span className="text-[15px]">

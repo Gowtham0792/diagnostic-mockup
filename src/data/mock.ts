@@ -6,7 +6,7 @@ export interface DmsEcuField {
 }
 
 export const dms = {
-  title: 'DMS Diagnostic Software',
+  title: 'iABS Diagnostic Software',
   tabs: ['OVERVIEW', 'DIAGNOSTIC MEMORY', 'CONTROL', 'SYSTEM'] as const,
   memory: { active: 1, inactive: 3 },
   ecuData: [
