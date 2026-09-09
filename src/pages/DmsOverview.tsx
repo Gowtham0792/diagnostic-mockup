@@ -10,127 +10,117 @@ import {
   Plus,
   Maximize2,
 } from 'lucide-react'
+import { dms } from '../data/mock'
 
 /**
  * Faithful visual clone of the ZF "[pro] Diagnostics Suite — DMS Diagnostic
- * Software / OVERVIEW" screen from the supplied screenshot. This deliberately
- * renders in the ZF light theme with hard-coded ZF colors (not the mockup's
- * design tokens) so it matches the reference 1:1.
+ * Software / OVERVIEW" screen. Fills the whole viewport with no scrolling; the
+ * promo graphic flexes to take up the remaining vertical space.
  *
- * The promo graphic is ZF marketing artwork that isn't in this repo, so it is
- * approximated with an inline SVG scene.
+ * Hard-coded ZF light-theme colors (not the mockup design tokens) so it matches
+ * the reference 1:1. The promo artwork is ZF marketing material that isn't in
+ * this repo, so it is approximated with an inline SVG scene.
  */
 
 const ZF_BLUE = '#0b5cd5'
 const DTC_RED = '#e1000f'
 const DTC_BLUE = '#0088ce'
 
-const tabs = ['OVERVIEW', 'DIAGNOSTIC MEMORY', 'CONTROL', 'SYSTEM'] as const
-
-const ecuFields: { label: string; value?: string }[] = [
-  { label: 'Mode of ECU', value: 'Shipping Mode' },
-  { label: 'Part Number', value: '884 112 240 0' },
-  { label: 'Software Version', value: '1.1' },
-  { label: 'Hardware Number' },
-  { label: 'Parameter File', value: '01.02.10' },
-  { label: 'Serial Number', value: '2025111900001' },
-  { label: 'Production Date', value: '12/25/2025' },
-]
-
 export default function DmsOverview() {
-  const [tab, setTab] = useState<(typeof tabs)[number]>('OVERVIEW')
+  const [tab, setTab] = useState<(typeof dms.tabs)[number]>('OVERVIEW')
 
   return (
-    <div className="flex justify-center">
-      <div className="w-full max-w-[1180px] overflow-hidden rounded-md border border-[#d9d9d9] bg-white text-[#1a1a1a] shadow-sm">
-        {/* Windows title bar */}
-        <div className="flex items-center gap-2 bg-[#f0f0f0] px-3 py-1.5 text-[11px] text-[#3a3a3a]">
-          <ZfMark className="h-3.5 w-6" />
-          <span>ZF [pro]Diagnostics Suite Stg Demo V1.65.0</span>
-          <div className="ml-auto flex items-center gap-3 text-[#7a7a7a]">
-            <span className="inline-block h-2.5 w-2.5 border-b border-[#7a7a7a]" />
-            <span className="inline-block h-2.5 w-2.5 border border-[#7a7a7a]" />
-            <span>✕</span>
-          </div>
+    <div className="relative flex h-screen w-screen flex-col overflow-hidden bg-white font-sans text-[#1a1a1a]">
+      {/* Windows title bar */}
+      <div className="flex shrink-0 items-center gap-2 bg-[#f0f0f0] px-3 py-1 text-[11px] text-[#3a3a3a]">
+        <ZfMark className="h-3.5 w-6" />
+        <span>{dms.windowTitle}</span>
+        <div className="ml-auto flex items-center gap-3 text-[#7a7a7a]">
+          <Minus className="h-3 w-3" />
+          <span className="inline-block h-2.5 w-2.5 border border-[#7a7a7a]" />
+          <span className="text-[13px] leading-none">✕</span>
         </div>
+      </div>
 
-        {/* Blue app bar */}
-        <div className="flex items-center gap-3 px-4 py-2.5 text-white" style={{ background: ZF_BLUE }}>
-          <Menu className="h-5 w-5" />
-          <ZfMark className="h-4 w-7" light />
-          <span className="text-[15px]">
-            <span className="font-semibold">[pro]</span>Diagnostics Suite
-          </span>
-          <CheckCircle2 className="h-5 w-5 text-[#7ed957]" />
-        </div>
+      {/* Blue app bar */}
+      <div className="flex shrink-0 items-center gap-3 px-4 py-2 text-white" style={{ background: ZF_BLUE }}>
+        <Menu className="h-5 w-5" />
+        <ZfMark className="h-4 w-7" light />
+        <span className="text-[15px]">
+          <span className="font-semibold">[pro]</span>Diagnostics Suite
+        </span>
+        <CheckCircle2 className="h-5 w-5 text-[#7ed957]" />
+      </div>
 
-        {/* Sub header */}
-        <div className="flex items-center px-4 py-3">
-          <button className="mr-3 grid h-7 w-7 place-items-center rounded-full border border-[#c9c9c9] text-[#555]">
-            <ArrowLeft className="h-4 w-4" />
+      {/* Sub header */}
+      <div className="flex shrink-0 items-center px-4 py-2.5">
+        <button className="mr-3 grid h-7 w-7 place-items-center rounded-full border border-[#c9c9c9] text-[#555]">
+          <ArrowLeft className="h-4 w-4" />
+        </button>
+        <h1 className="text-[17px] font-normal text-[#333]">{dms.title}</h1>
+        <button className="ml-auto flex items-center gap-1 text-[13px] font-semibold" style={{ color: ZF_BLUE }}>
+          <Home className="h-4 w-4" />
+          ZF
+          <ChevronDown className="h-4 w-4" />
+        </button>
+      </div>
+
+      {/* Tabs */}
+      <div className="flex shrink-0 items-center gap-6 border-b-2 px-5" style={{ borderColor: ZF_BLUE }}>
+        {dms.tabs.map((t) => (
+          <button
+            key={t}
+            onClick={() => setTab(t)}
+            className="relative -mb-0.5 py-2 text-[12px] tracking-wide"
+            style={{ color: tab === t ? ZF_BLUE : '#5a5a5a' }}
+          >
+            {t}
+            {tab === t && (
+              <span className="absolute -bottom-0.5 left-0 h-0.5 w-full" style={{ background: ZF_BLUE }} />
+            )}
           </button>
-          <h1 className="text-[17px] font-normal text-[#333]">DMS Diagnostic Software</h1>
-          <button className="ml-auto flex items-center gap-1 text-[13px] font-semibold" style={{ color: ZF_BLUE }}>
-            <Home className="h-4 w-4" />
-            ZF
-            <ChevronDown className="h-4 w-4" />
-          </button>
+        ))}
+        <MoreVertical className="h-4 w-4 text-[#5a5a5a]" />
+      </div>
+
+      {/* Body — flexes to fill, no scroll */}
+      <div className="flex min-h-0 flex-1 flex-col px-5 py-3">
+        <h2 className="text-[15px] font-bold">Diagnostic Memory</h2>
+        <div className="mt-1.5 flex items-center gap-8 text-[13px]">
+          <DtcCounter count={dms.memory.active} color={DTC_RED} label="Active DTC" />
+          <DtcCounter count={dms.memory.inactive} color={DTC_BLUE} label="Inactive DTC" />
         </div>
 
-        {/* Tabs */}
-        <div className="flex items-center gap-6 border-b-2 px-5" style={{ borderColor: ZF_BLUE }}>
-          {tabs.map((t) => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className="relative -mb-0.5 py-2 text-[12px] tracking-wide"
-              style={{ color: tab === t ? ZF_BLUE : '#5a5a5a' }}
-            >
-              {t}
-              {tab === t && (
-                <span className="absolute -bottom-0.5 left-0 h-0.5 w-full" style={{ background: ZF_BLUE }} />
-              )}
-            </button>
+        <h2 className="mt-4 text-[15px] font-bold">ECU Data</h2>
+        <div className="mt-2 flex flex-wrap gap-x-12 gap-y-2 border-b border-dashed border-[#c9c9c9] pb-2">
+          {dms.ecuData.map((f) => (
+            <div key={f.label} className="min-w-[90px]">
+              <div className="text-[11px] text-[#6b7280]">{f.label}</div>
+              <div className="text-[13px]">{f.value ?? ' '}</div>
+            </div>
           ))}
-          <MoreVertical className="h-4 w-4 text-[#5a5a5a]" />
+        </div>
+        <div className="border-b border-dashed border-[#c9c9c9]" />
+
+        {/* Promo graphic takes the remaining space */}
+        <div className="flex min-h-0 flex-1 items-center justify-center py-3">
+          <AddwGraphic />
         </div>
 
-        {/* Body */}
-        <div className="px-5 pb-10 pt-5">
-          <h2 className="text-[15px] font-bold text-[#1a1a1a]">Diagnostic Memory</h2>
-          <div className="mt-2 flex items-center gap-8 text-[13px]">
-            <DtcCounter count={1} color={DTC_RED} label="Active DTC" />
-            <DtcCounter count={3} color={DTC_BLUE} label="Inactive DTC" />
-          </div>
-
-          <h2 className="mt-6 text-[15px] font-bold text-[#1a1a1a]">ECU Data</h2>
-          <div className="mt-3 flex flex-wrap gap-x-12 gap-y-3 border-b border-dashed border-[#c9c9c9] pb-3">
-            {ecuFields.map((f) => (
-              <div key={f.label} className="min-w-[90px]">
-                <div className="text-[11px] text-[#6b7280]">{f.label}</div>
-                <div className="text-[13px] text-[#1a1a1a]">{f.value ?? ' '}</div>
-              </div>
-            ))}
-          </div>
-          <div className="border-b border-dashed border-[#c9c9c9]" />
-
-          {/* Promo graphic */}
-          <div className="relative mt-6 flex justify-center">
-            <AddwGraphic />
-          </div>
-
-          {/* Zoom control */}
-          <div className="mt-4 inline-flex items-center gap-3 rounded-md bg-[#4b4b4b]/85 px-3 py-1.5 text-[12px] text-white">
-            <span>…NN TDTGG2</span>
-            <button><Minus className="h-3.5 w-3.5" /></button>
-            <button><Plus className="h-3.5 w-3.5" /></button>
-            <button><Maximize2 className="h-3.5 w-3.5" /></button>
-          </div>
-
-          <div className="mt-6 text-center text-[18px] font-extrabold tracking-wide" style={{ color: DTC_RED }}>
-            DEMO MODE!
-          </div>
+        <div
+          className="shrink-0 pb-1 text-center text-[18px] font-extrabold tracking-wide"
+          style={{ color: DTC_RED }}
+        >
+          {dms.demoMode && 'DEMO MODE!'}
         </div>
+      </div>
+
+      {/* Zoom control */}
+      <div className="absolute bottom-3 left-4 inline-flex items-center gap-3 rounded-md bg-[#4b4b4b]/85 px-3 py-1.5 text-[12px] text-white">
+        <span>{dms.zoomLabel}</span>
+        <button aria-label="Zoom out"><Minus className="h-3.5 w-3.5" /></button>
+        <button aria-label="Zoom in"><Plus className="h-3.5 w-3.5" /></button>
+        <button aria-label="Fit"><Maximize2 className="h-3.5 w-3.5" /></button>
       </div>
     </div>
   )
@@ -143,7 +133,10 @@ function DtcCounter({ count, color, label }: { count: number; color: string; lab
         <svg width="22" height="20" viewBox="0 0 22 20" aria-hidden>
           <path d="M11 1 21 19 1 19Z" fill={color} />
         </svg>
-        <span className="absolute -right-1.5 -top-1.5 grid h-[14px] min-w-[14px] place-items-center rounded-full bg-white px-[3px] text-[9px] font-bold" style={{ color }}>
+        <span
+          className="absolute -right-1.5 -top-1.5 grid h-[14px] min-w-[14px] place-items-center rounded-full bg-white px-[3px] text-[9px] font-bold"
+          style={{ color }}
+        >
           {count}
         </span>
       </span>
@@ -175,7 +168,12 @@ function ZfMark({ className, light }: { className?: string; light?: boolean }) {
 
 function AddwGraphic() {
   return (
-    <svg viewBox="0 0 460 250" className="w-full max-w-[440px] rounded-sm border border-[#e5e5e5]" role="img" aria-label="Advanced Driver Distraction Warning promotional graphic">
+    <svg
+      viewBox="0 0 460 250"
+      className="h-full max-h-full w-auto max-w-full rounded-sm border border-[#e5e5e5]"
+      role="img"
+      aria-label="Advanced Driver Distraction Warning promotional graphic"
+    >
       <defs>
         <clipPath id="addwClip"><rect width="460" height="250" /></clipPath>
       </defs>
@@ -204,10 +202,21 @@ function AddwGraphic() {
         <rect x="297" y="92" width="6" height="26" rx="3" fill={DTC_BLUE} />
         <circle cx="300" cy="128" r="3.5" fill={DTC_BLUE} />
         {/* caption */}
-        <text x="14" y="230" fontFamily="system-ui, sans-serif" fontStyle="italic" fontWeight="600" fontSize="17" fill="#ffffff" opacity="0.92">
-          Advanced Driver Distraction Warning
+        <text
+          x="14"
+          y="230"
+          fontFamily="system-ui, sans-serif"
+          fontStyle="italic"
+          fontWeight="600"
+          fontSize="17"
+          fill="#ffffff"
+          opacity="0.92"
+        >
+          {dms.featureName}
         </text>
-        <text x="424" y="238" fontFamily="system-ui, sans-serif" fontWeight="800" fontSize="13" fill="#ffffff">ZF</text>
+        <text x="424" y="238" fontFamily="system-ui, sans-serif" fontWeight="800" fontSize="13" fill="#ffffff">
+          ZF
+        </text>
       </g>
     </svg>
   )
