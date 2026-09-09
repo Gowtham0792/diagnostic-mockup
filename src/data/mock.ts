@@ -10,7 +10,7 @@ export const dms = {
   tabs: ['OVERVIEW', 'DIAGNOSTIC MEMORY', 'CONTROL', 'SYSTEM'] as const,
   memory: { active: 1, inactive: 3 },
   ecuData: [
-    { label: 'ECU Type' },
+    { label: 'ECU Type', value: 'iABS Premium' },
     { label: 'Device Part Number' },
     { label: 'Production date' },
     { label: 'Software Version' },
