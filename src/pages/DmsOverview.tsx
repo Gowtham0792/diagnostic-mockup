@@ -26,7 +26,7 @@ export default function DmsOverview() {
         <span className="grid h-7 w-7 place-items-center rounded-full bg-white p-0.5">
           <img src={zfLogo} alt="ZF" className="h-full w-full" />
         </span>
-        <span className="text-[15px]">
+        <span className="text-[18px]">
           <span className="font-semibold">[pro]</span>Diagnostics Suite
         </span>
         <CheckCircle2 className="h-5 w-5 text-[#7ed957]" />
@@ -37,8 +37,8 @@ export default function DmsOverview() {
         <button className="mr-3 grid h-7 w-7 place-items-center rounded-full border border-[#c9c9c9] text-[#555]">
           <ArrowLeft className="h-4 w-4" />
         </button>
-        <h1 className="text-[17px] font-normal text-[#333]">{dms.title}</h1>
-        <button className="ml-auto flex items-center gap-1.5 text-[13px] font-semibold" style={{ color: ZF_BLUE }}>
+        <h1 className="text-[20px] font-normal text-[#333]">{dms.title}</h1>
+        <button className="ml-auto flex items-center gap-1.5 text-[16px] font-semibold" style={{ color: ZF_BLUE }}>
           <Home className="h-4 w-4" />
           <img src={zfLogo} alt="ZF" className="h-4 w-6 object-contain" />
           <ChevronDown className="h-4 w-4" />
@@ -51,7 +51,7 @@ export default function DmsOverview() {
           <button
             key={t}
             onClick={() => setTab(t)}
-            className="relative -mb-0.5 py-2 text-[12px] tracking-wide"
+            className="relative -mb-0.5 py-2 text-[14px] tracking-wide"
             style={{ color: tab === t ? ZF_BLUE : '#5a5a5a' }}
           >
             {t}
@@ -65,18 +65,21 @@ export default function DmsOverview() {
 
       {/* Body */}
       <div className="min-h-0 flex-1 px-5 py-3">
-        <h2 className="text-[15px] font-bold">Diagnostic Memory</h2>
-        <div className="mt-1.5 flex items-center gap-8 text-[13px]">
+        <h2 className="text-[18px] font-bold">Diagnostic Memory</h2>
+        <div className="mt-1.5 flex items-center gap-8 text-[16px]">
           <DtcCounter count={dms.memory.active} color={DTC_RED} label="Active DTC" />
           <DtcCounter count={dms.memory.inactive} color={DTC_BLUE} label="Inactive DTC" />
         </div>
 
-        <h2 className="mt-4 text-[15px] font-bold">ECU Data</h2>
-        <div className="mt-2 flex flex-wrap gap-x-12 gap-y-2 border-b border-dashed border-[#c9c9c9] pb-2">
+        <h2 className="mt-4 text-[18px] font-bold">ECU Data</h2>
+        <div
+          className="mt-2 grid gap-x-6 gap-y-2 border-b border-dashed border-[#c9c9c9] pb-2"
+          style={{ gridTemplateColumns: `repeat(${dms.ecuData.length}, minmax(0, 1fr))` }}
+        >
           {dms.ecuData.map((f) => (
-            <div key={f.label} className="min-w-[90px]">
-              <div className="text-[11px] text-[#6b7280]">{f.label}</div>
-              <div className="text-[13px]">{f.value ?? ' '}</div>
+            <div key={f.label}>
+              <div className="text-[13px] text-[#6b7280]">{f.label}</div>
+              <div className="text-[16px]">{f.value ?? ' '}</div>
             </div>
           ))}
         </div>
@@ -94,7 +97,7 @@ function DtcCounter({ count, color, label }: { count: number; color: string; lab
           <path d="M11 1 21 19 1 19Z" fill={color} />
         </svg>
         <span
-          className="absolute -right-1.5 -top-1.5 grid h-[14px] min-w-[14px] place-items-center rounded-full bg-white px-[3px] text-[9px] font-bold"
+          className="absolute -right-1.5 -top-1.5 grid h-[17px] min-w-[17px] place-items-center rounded-full bg-white px-[3px] text-[11px] font-bold"
           style={{ color }}
         >
           {count}
