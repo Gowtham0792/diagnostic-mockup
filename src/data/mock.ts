@@ -103,6 +103,27 @@ export const trend = Array.from({ length: 40 }, (_, i) => ({
   coolant: 60 + Math.min(35, i * 0.9),
 }))
 
+export interface DmsEcuField {
+  label: string
+  value: string
+}
+
+export const dms = {
+  title: 'DMS Diagnostic Software',
+  featureName: 'Advanced Driver Distraction Warning',
+  demoMode: true,
+  memory: { active: 1, inactive: 3 },
+  modeOfEcu: 'Shipping Mode',
+  ecuData: [
+    { label: 'Part Number', value: '884 112 240 0' },
+    { label: 'Software Version', value: '1.1' },
+    { label: 'Hardware Number', value: '—' },
+    { label: 'Parameter File', value: '01.02.10' },
+    { label: 'Serial Number', value: '2025111900001' },
+    { label: 'Production Date', value: '12/25/2025' },
+  ] as DmsEcuField[],
+}
+
 export interface TestStep {
   id: number
   title: string

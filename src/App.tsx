@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Gauge, ListTree, Activity, Wrench, FileText, Moon, Sun, Plug } from 'lucide-react'
+import { Gauge, ListTree, Activity, Wrench, FileText, Moon, Sun, Plug, MonitorCog } from 'lucide-react'
 import { cn } from './components/ui'
 import Dashboard from './pages/Dashboard'
+import DmsOverview from './pages/DmsOverview'
 import Faults from './pages/Faults'
 import LiveData from './pages/LiveData'
 import GuidedTest from './pages/GuidedTest'
@@ -14,6 +15,7 @@ const nav = [
   { id: 'live', label: 'Live Data', icon: Activity, el: <LiveData /> },
   { id: 'test', label: 'Guided Tests', icon: Wrench, el: <GuidedTest /> },
   { id: 'report', label: 'Report', icon: FileText, el: <Report /> },
+  { id: 'dms', label: 'DMS Overview', icon: MonitorCog, el: <DmsOverview /> },
 ] as const
 
 export default function App() {
