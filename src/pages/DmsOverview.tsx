@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Menu, ArrowLeft, Home, ChevronDown, MoreVertical, CheckCircle2 } from 'lucide-react'
 import { dms } from '../data/mock'
+import zfLogo from '../assets/ZF_logo_STD_Blue_3CC.svg'
 
 /**
  * Faithful visual clone of the ZF "[pro] Diagnostics Suite — DMS Diagnostic
@@ -22,7 +23,9 @@ export default function DmsOverview() {
       {/* Blue app bar */}
       <div className="flex shrink-0 items-center gap-3 px-4 py-2 text-white" style={{ background: ZF_BLUE }}>
         <Menu className="h-5 w-5" />
-        <ZfMark className="h-4 w-7" />
+        <span className="grid h-6 w-6 place-items-center rounded-sm bg-white p-0.5">
+          <img src={zfLogo} alt="ZF" className="h-full w-full" />
+        </span>
         <span className="text-[15px]">
           <span className="font-semibold">[pro]</span>Diagnostics Suite
         </span>
@@ -35,9 +38,9 @@ export default function DmsOverview() {
           <ArrowLeft className="h-4 w-4" />
         </button>
         <h1 className="text-[17px] font-normal text-[#333]">{dms.title}</h1>
-        <button className="ml-auto flex items-center gap-1 text-[13px] font-semibold" style={{ color: ZF_BLUE }}>
+        <button className="ml-auto flex items-center gap-1.5 text-[13px] font-semibold" style={{ color: ZF_BLUE }}>
           <Home className="h-4 w-4" />
-          ZF
+          <img src={zfLogo} alt="ZF" className="h-4 w-6 object-contain" />
           <ChevronDown className="h-4 w-4" />
         </button>
       </div>
@@ -98,27 +101,6 @@ function DtcCounter({ count, color, label }: { count: number; color: string; lab
         </span>
       </span>
       {label}
-    </span>
-  )
-}
-
-function ZfMark({ className }: { className?: string }) {
-  return (
-    <span
-      className={className}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontWeight: 800,
-        fontSize: 10,
-        letterSpacing: 0.5,
-        color: ZF_BLUE,
-        background: '#fff',
-        borderRadius: 2,
-      }}
-    >
-      ZF
     </span>
   )
 }
