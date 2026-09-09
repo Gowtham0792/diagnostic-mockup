@@ -6,11 +6,7 @@ export interface DmsEcuField {
 }
 
 export const dms = {
-  windowTitle: 'ZF [pro]Diagnostics Suite Stg Demo V1.65.0',
   title: 'DMS Diagnostic Software',
-  featureName: 'Advanced Driver Distraction Warning',
-  demoMode: true,
-  zoomLabel: '…NN TDTGG2',
   tabs: ['OVERVIEW', 'DIAGNOSTIC MEMORY', 'CONTROL', 'SYSTEM'] as const,
   memory: { active: 1, inactive: 3 },
   ecuData: [
