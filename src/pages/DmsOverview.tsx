@@ -71,7 +71,9 @@ export default function DmsOverview() {
           <DtcCounter count={dms.memory.inactive} color={DTC_BLUE} label="Inactive DTC" />
         </div>
 
-        <h2 className="mt-4 text-[18px] font-bold">ECU Data</h2>
+        <div className="mt-3 border-b border-[#d9dce1]" />
+
+        <h2 className="mt-3 text-[18px] font-bold">ECU Data</h2>
         <div
           className="mt-2 grid gap-x-6 gap-y-2 border-b border-dashed border-[#c9c9c9] pb-2"
           style={{ gridTemplateColumns: `repeat(${dms.ecuData.length}, minmax(0, 1fr))` }}
