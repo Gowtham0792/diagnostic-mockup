@@ -12,12 +12,12 @@ export const dms = {
   ecuData: [
     { label: 'ECU Type', value: 'iABS Premium' },
     { label: 'Device Part Number', value: '400 500 530 0' },
-    { label: 'Production date' },
-    { label: 'Software Version' },
+    { label: 'Software Version', value: 'tabs101' },
     { label: 'Part Number (ECU)' },
-    { label: 'Parameter File' },
+    { label: 'Parameter File', value: '1.12.10' },
     { label: 'Part Number (Modulator)' },
     { label: 'Odometer Reading' },
     { label: 'Next Service at:' },
+    { label: 'Production date', value: '30/02/2027' },
   ] as DmsEcuField[],
 }
