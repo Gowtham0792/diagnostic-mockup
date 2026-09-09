@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: 244 245 247;
+  --panel: 255 255 255;
+  --ink: 17 21 28;
+  --muted: 107 114 128;
+  --line: 226 228 232;
+  --brand: 37 99 235;
+  color-scheme: light dark;
+}
+
+.dark {
+  --bg: 13 15 20;
+  --panel: 22 25 32;
+  --ink: 233 236 240;
+  --muted: 148 156 168;
+  --line: 40 44 54;
+  --brand: 96 165 250;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: rgb(var(--bg));
+  color: rgb(var(--ink));
+  font: 14px/1.5 system-ui, 'Segoe UI', Roboto, sans-serif;
+}
