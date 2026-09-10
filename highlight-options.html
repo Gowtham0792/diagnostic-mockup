@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Step indicator &amp; selection highlight — options</title>
+<style>
+  :root{
+    --zf-blue:#0b5cd5; --zf-blue-d:#083f93; --cyan:#1f9ed6;
+    --ink:#16202b; --muted:#5a6b7b; --line:#dfe3e8; --bg:#eef1f4; --panel:#fff; --ok:#1c9e5a;
+    font-synthesis-weight:none;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:1040px;margin:0 auto;padding:38px 20px 90px}
+  h1{font-size:24px;margin:0 0 4px}
+  .sub{color:var(--muted);margin:0 0 6px;max-width:74ch}
+  h2.big{font-size:19px;margin:34px 0 4px;padding-top:16px;border-top:2px solid var(--line)}
+  .sub2{color:var(--muted);font-size:13.5px;margin:0 0 6px}
+
+  .opt{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px 20px;margin-top:16px}
+  .opt h3{font-size:15px;margin:0 0 3px}
+  .opt .why{color:var(--muted);font-size:12.5px;margin:0 0 14px}
+  .tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--zf-blue-d);background:#e7f0ff;border-radius:999px;padding:2px 8px;margin-left:8px;vertical-align:2px}
+
+  /* ---------- step indicator samples ---------- */
+  .demoframe{border:1px dashed #c7ccd2;border-radius:10px;background:#fbfcfd;padding:14px}
+  .stnav{display:flex;align-items:center;gap:2px;overflow-x:auto}
+  .stnav .st{display:flex;align-items:center;gap:8px}
+  .stnav .dot{display:grid;place-items:center;width:28px;height:28px;border-radius:999px;font-size:12px;font-weight:700;flex:none}
+  .stnav .lb{font-size:13px;white-space:nowrap}
+  .stnav .conn{width:34px;height:2px;background:var(--line);margin:0 8px;flex:none}
+
+  /* S1 numbered pills */
+  .s1 .dot{background:#fff;border:2px solid #cfd6de;color:#8a94a0}
+  .s1 .st.cur .dot{background:var(--zf-blue);color:#fff;box-shadow:0 0 0 4px rgba(11,92,213,.16)}
+  .s1 .st.done .dot{background:var(--zf-blue);color:#fff}
+  .s1 .st.cur .lb{font-weight:700;color:var(--zf-blue)}
+  .s1 .lb{color:var(--muted);font-weight:500}
+
+  /* S2 progress bar + counter */
+  .s2 .head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .s2 .title{font-weight:700;font-size:15px}
+  .s2 .count{font-size:12.5px;color:var(--muted)}
+  .s2 .track{height:6px;border-radius:99px;background:#e6e9ee;overflow:hidden}
+  .s2 .fill{height:100%;width:20%;background:var(--zf-blue);border-radius:99px;transition:width .3s}
+
+  /* S3 underline tabs */
+  .s3 .tabs{display:flex;gap:22px;border-bottom:1px solid var(--line)}
+  .s3 .tab{padding:8px 0;font-size:13px;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap}
+  .s3 .tab.cur{color:var(--zf-blue);font-weight:700;border-bottom-color:var(--zf-blue)}
+  .s3 .tab.done{color:var(--ink)}
+
+  /* S4 filled track */
+  .s4 .conn.filled{background:var(--zf-blue)}
+  .s4 .dot{background:#fff;border:2px solid #cfd6de;color:#8a94a0}
+  .s4 .st.done .dot,.s4 .st.cur .dot{background:var(--zf-blue);border-color:var(--zf-blue);color:#fff}
+  .s4 .st.cur .dot{box-shadow:0 0 0 4px rgba(11,92,213,.16)}
+  .s4 .st.cur .lb{font-weight:700;color:var(--zf-blue)}
+  .s4 .lb{color:var(--muted)}
+
+  /* S5 dots only */
+  .s5{display:flex;align-items:center;gap:10px}
+  .s5 .d{width:9px;height:9px;border-radius:99px;background:#cfd6de}
+  .s5 .d.done{background:var(--zf-blue)}
+  .s5 .d.cur{background:var(--zf-blue);width:24px;border-radius:99px}
+  .s5 .cap{margin-left:8px;font-size:13px;font-weight:700;color:var(--zf-blue)}
+
+  /* ---------- selection highlight samples ---------- */
+  .tiles{display:flex;flex-wrap:wrap;gap:16px;padding-top:4px}
+  .tile{width:96px;height:88px;display:grid;place-items:center;border-radius:12px;cursor:pointer;
+    position:relative;background:#fff;border:2px solid var(--cyan);transition:.15s}
+  .tile:hover{background:#f2fafd}
+  .tile svg{display:block}
+  .badge{position:absolute;top:-9px;right:-9px;width:22px;height:22px;border-radius:999px;display:grid;
+    place-items:center;background:#fff;color:var(--zf-blue);box-shadow:0 1px 4px rgba(0,0,0,.18);
+    border:1px solid rgba(11,92,213,.2)}
+  .badge svg{width:14px;height:14px}
+
+  /* H1 border tint + ring (original) */
+  .h1 .tile[aria-pressed=true]{border-color:var(--zf-blue);background:#eef6fb;box-shadow:0 0 0 3px rgba(11,92,213,.16)}
+
+  /* H2 solid fill + invert + badge + scale (proposed) */
+  .h2 .tile[aria-pressed=true]{border-color:var(--zf-blue);background:var(--zf-blue);transform:scale(1.05);
+    box-shadow:0 8px 20px rgba(11,92,213,.30)}
+
+  /* H3 thick border + badge, glyph unchanged */
+  .h3 .tile{border-width:2px}
+  .h3 .tile[aria-pressed=true]{border-width:3px;border-color:var(--zf-blue);background:#f4f9ff}
+
+  /* H4 elevated card + accent bar */
+  .h4 .tile{border:1px solid var(--line);box-shadow:0 1px 2px rgba(16,32,50,.06)}
+  .h4 .tile[aria-pressed=true]{border-color:transparent;transform:translateY(-3px) scale(1.03);
+    box-shadow:0 14px 26px rgba(16,32,50,.16)}
+  .h4 .tile[aria-pressed=true]::after{content:"";position:absolute;left:14px;right:14px;bottom:6px;height:3px;
+    border-radius:2px;background:var(--zf-blue)}
+
+  /* H5 filled header strip */
+  .h5 .tile{overflow:hidden;border-color:var(--line)}
+  .h5 .tile[aria-pressed=true]{border-color:var(--zf-blue)}
+  .h5 .strip{position:absolute;top:0;left:0;right:0;height:0;background:var(--zf-blue);transition:height .18s;
+    display:grid;place-items:center;color:#fff}
+  .h5 .tile[aria-pressed=true] .strip{height:20px}
+  .h5 .tile[aria-pressed=true] .g{transform:translateY(7px)}
+  .h5 .strip svg{width:13px;height:13px}
+
+  /* H6 ring pulse + badge */
+  .h6 .tile[aria-pressed=true]{border-color:var(--zf-blue);background:#eef6fb;animation:pulse 1.4s ease-out infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(11,92,213,.35)}70%{box-shadow:0 0 0 10px rgba(11,92,213,0)}100%{box-shadow:0 0 0 0 rgba(11,92,213,0)}}
+
+  .foot{margin-top:40px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+  .foot b{color:var(--ink)}
+  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Step indicator &amp; selection highlight — options</h1>
+  <p class="sub">Two things to make clearer: (1) which authoring step you're on,
+  (2) which trailer tile is selected. Samples are interactive — click a tile.</p>
+
+  <h2 class="big">A · Step indicator</h2>
+  <p class="sub2">Shown as a bar under the header. Steps: Select vehicle · Axle
+  configuration · ABS layout · Parameters · Publish. Current = step 1.</p>
+
+  <div class="opt">
+    <h3>S1 · Numbered pills + connectors <span class="tag">now live</span></h3>
+    <p class="why">Number in a circle, label beside it, thin connectors. Current step
+    filled blue with a halo; done steps get a check. Familiar, label always readable.</p>
+    <div class="demoframe"><div class="stnav s1" id="s1"></div></div>
+  </div>
+
+  <div class="opt">
+    <h3>S2 · Title + progress bar + counter</h3>
+    <p class="why">Big current-step title, "Step 1 of 5", a thin fill bar. Most compact;
+    only the current step is named.</p>
+    <div class="demoframe s2">
+      <div class="head"><span class="title">Select vehicle</span><span class="count">Step 1 of 5</span></div>
+      <div class="track"><div class="fill"></div></div>
+    </div>
+  </div>
+
+  <div class="opt">
+    <h3>S3 · Underline tabs</h3>
+    <p class="why">All steps as tab labels; the current one is blue with an underline.
+    Reads like navigation; good if steps can be revisited.</p>
+    <div class="demoframe"><div class="tabs s3" id="s3"></div></div>
+  </div>
+
+  <div class="opt">
+    <h3>S4 · Filled progress track</h3>
+    <p class="why">Like S1 but the connector segments behind completed steps fill blue —
+    a clearer sense of "how far along".</p>
+    <div class="demoframe"><div class="stnav s4" id="s4"></div></div>
+  </div>
+
+  <div class="opt">
+    <h3>S5 · Minimal dots</h3>
+    <p class="why">Just dots (current one elongates) + the current step name. Smallest
+    footprint; loses the other step names.</p>
+    <div class="demoframe"><div class="s5" id="s5"></div></div>
+  </div>
+
+  <h2 class="big">B · Selected-tile highlight</h2>
+  <p class="sub2">The current border-tint is easy to miss. Options, strongest first.</p>
+
+  <div class="opt h2">
+    <h3>H2 · Solid fill + inverted glyph + check badge + scale <span class="tag">proposed</span></h3>
+    <p class="why">Unmissable: the tile becomes solid ZF blue, the trailer turns white,
+    a check badge pops on the corner, slight scale-up. Now applied in the tool.</p>
+    <div class="tiles" id="h2"></div>
+  </div>
+
+  <div class="opt h4">
+    <h3>H4 · Elevated card + accent bar</h3>
+    <p class="why">Tile lifts with a strong shadow and gains a blue underline bar. Keeps
+    the glyph as-is; feels tactile.</p>
+    <div class="tiles" id="h4"></div>
+  </div>
+
+  <div class="opt h5">
+    <h3>H5 · Filled header strip</h3>
+    <p class="why">A blue strip with a check slides down over the top of the tile; glyph
+    nudges down. Distinct without inverting the whole tile.</p>
+    <div class="tiles" id="h5"></div>
+  </div>
+
+  <div class="opt h3">
+    <h3>H3 · Thick border + check badge</h3>
+    <p class="why">Conservative: 3px blue border, faint blue wash, corner check. Lowest
+    visual disruption.</p>
+    <div class="tiles" id="h3"></div>
+  </div>
+
+  <div class="opt h6">
+    <h3>H6 · Ring pulse</h3>
+    <p class="why">Border tint + a slow pulsing ring + badge. Draws the eye; can feel
+    busy if several selections happen in a flow.</p>
+    <div class="tiles" id="h6"></div>
+  </div>
+
+  <div class="opt h1">
+    <h3>H1 · Border tint + ring <span class="tag">original</span></h3>
+    <p class="why">Light blue border, faint wash, soft ring. Subtle — the reason we're
+    here.</p>
+    <div class="tiles" id="h1"></div>
+  </div>
+
+  <div class="foot">
+    <b>Recommendation:</b> step indicator <b>S1</b> (or <b>S4</b> for a stronger
+    progress feel); selected tile <b>H2</b>. Both are applied in the tool now —
+    <a href="./authoring.html">open it</a> — swap to any other on request.
+  </div>
+</div>
+
+<script>
+  const STEPS = ['Select vehicle','Axle configuration','ABS layout','Parameters','Publish'];
+  const CURRENT = 0;
+
+  // S1 / S4
+  function buildStnav(hostId, filled){
+    const host = document.getElementById(hostId);
+    STEPS.forEach((label,i) => {
+      const st = document.createElement('div');
+      st.className = 'st ' + (i < CURRENT ? 'done' : i === CURRENT ? 'cur' : 'todo');
+      const state = i < CURRENT ? '✓' : (i+1);
+      st.innerHTML = `<span class="dot">${i<CURRENT?'&#10003;':i+1}</span><span class="lb">${label}</span>`;
+      host.appendChild(st);
+      if (i < STEPS.length-1){
+        const c = document.createElement('span');
+        c.className = 'conn' + (filled && i < CURRENT ? ' filled' : '');
+        host.appendChild(c);
+      }
+    });
+  }
+  buildStnav('s1', false);
+  buildStnav('s4', true);
+
+  // S3
+  (function(){
+    const host = document.getElementById('s3');
+    STEPS.forEach((label,i) => {
+      const t = document.createElement('span');
+      t.className = 'tab ' + (i < CURRENT ? 'done' : i === CURRENT ? 'cur' : '');
+      t.textContent = label;
+      host.appendChild(t);
+    });
+  })();
+
+  // S5
+  (function(){
+    const host = document.getElementById('s5');
+    STEPS.forEach((_,i) => {
+      const d = document.createElement('span');
+      d.className = 'd ' + (i < CURRENT ? 'done' : i === CURRENT ? 'cur' : '');
+      host.appendChild(d);
+    });
+    const cap = document.createElement('span');
+    cap.className = 'cap'; cap.textContent = STEPS[CURRENT];
+    host.appendChild(cap);
+  })();
+
+  // ---- trailer glyph ----
+  const SAMPLE = [['drawbar',[1,1]],['drawbar',[1,2]],['gooseneck',[2]],['gooseneck',[3]],['rigid',[2]]];
+  const groupXs = (c,n) => { const sp=n>=3?8:9; return Array.from({length:n},(_,i)=>c-((n-1)*sp)/2+i*sp); };
+  const axleXs = (g,f) => {
+    if (g.length===1) return groupXs(f==='gooseneck'?58:46,g[0]);
+    const lo=f==='drawbar'?30:34,hi=70;
+    return g.flatMap((c,i)=>groupXs(lo+((hi-lo)*i)/(g.length-1),c));
+  };
+  function glyph(f,g,stroke,wheel){
+    stroke = stroke||'#1f9ed6'; wheel = wheel||'#fff';
+    let fr='';
+    if(f==='drawbar') fr=`<path d="M14 44 L7 44 L3 50" stroke="${stroke}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="3" cy="50" r="1.8" fill="${stroke}"/>`;
+    if(f==='gooseneck') fr=`<path d="M14 26 C7 26 8 42 3 45" stroke="${stroke}" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="3" cy="49" r="2.6" stroke="${stroke}" stroke-width="2" fill="none"/>`;
+    if(f==='rigid') fr=`<path d="M14 40 L3 40" stroke="${stroke}" stroke-width="2" stroke-linecap="round"/><circle cx="3" cy="40" r="1.8" fill="${stroke}"/>`;
+    const wh = axleXs(g,f).map(x=>`<circle cx="${x}" cy="53" r="4.5" fill="${wheel}" stroke="${stroke}" stroke-width="2"/>`).join('');
+    return `<svg viewBox="0 0 96 62" width="74" height="48" fill="none" class="g" aria-hidden="true">
+      <rect x="14" y="24" width="68" height="26" rx="4" stroke="${stroke}" stroke-width="2"/>${fr}${wh}</svg>`;
+  }
+  const CHECK = `<span class="badge"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-9" stroke="#0b5cd5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;
+
+  ['h1','h2','h3','h4','h5','h6'].forEach(variant => {
+    const host = document.getElementById(variant);
+    SAMPLE.forEach(([f,g], idx) => {
+      const b = document.createElement('button');
+      b.className = 'tile'; b.type = 'button'; b.setAttribute('aria-pressed', idx===1 ? 'true':'false');
+      const invert = variant === 'h2';
+      const render = pressed => {
+        const stroke = (invert && pressed) ? '#fff' : '#1f9ed6';
+        const wheel  = (invert && pressed) ? '#0b5cd5' : '#fff';
+        b.innerHTML =
+          (variant === 'h5' ? `<span class="strip"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-9" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>` : '') +
+          glyph(f,g,stroke,wheel) +
+          ((pressed && variant !== 'h5' && variant !== 'h4') ? CHECK : '') +
+          ((pressed && variant === 'h4') ? '' : '');
+      };
+      render(idx===1);
+      b.onclick = () => {
+        host.querySelectorAll('.tile').forEach(t => { t.setAttribute('aria-pressed','false'); });
+        b.setAttribute('aria-pressed','true');
+        host.querySelectorAll('.tile').forEach(t => {
+          const pressed = t === b;
+          const [ff,gg] = t.__data;
+          const stroke = (invert && pressed) ? '#fff' : '#1f9ed6';
+          const wheel  = (invert && pressed) ? '#0b5cd5' : '#fff';
+          t.innerHTML =
+            (variant === 'h5' ? `<span class="strip"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10l4 4 8-9" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>` : '') +
+            glyph(ff,gg,stroke,wheel) +
+            ((pressed && variant !== 'h5' && variant !== 'h4') ? CHECK : '');
+        });
+      };
+      b.__data = [f,g];
+      host.appendChild(b);
+    });
+  });
+</script>
+</body>
+</html>
