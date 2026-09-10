@@ -1,21 +1,20 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
+import { Check } from 'lucide-react'
 import { vehicleGroups, type TrailerFront } from '../vehicles'
 
 /**
  * Authoring step 1 — "Select vehicle".
  *
  * Layout "L4": pick the trailer kind from a segmented control, then only that
- * kind's axle layouts are shown as a single row of tiles. Alternative layouts
- * live in public/select-vehicle-styles.html.
+ * kind's axle layouts are shown as a single row of tiles.
  *
- * Transitions: the segmented control has a sliding highlight pill; changing the
- * kind re-keys the tile row so the tiles replay a staggered "tile-in" animation
- * (see tailwind.config.js). Honours prefers-reduced-motion via src/index.css.
+ * Selected tile: solid ZF-blue fill, inverted (white) glyph, check badge and a
+ * small scale-up — far more ascertain than a border tint. Other options are
+ * compared in public/highlight-options.html.
  */
 
 const ACCENT = '#1f9ed6'
-const SELECTED = '#0b5cd5'
 
 export default function SelectVehicle() {
   const [kind, setKind] = useState(vehicleGroups[0].id)
@@ -34,7 +33,8 @@ export default function SelectVehicle() {
 
   return (
     <div className="min-h-0 flex-1 overflow-auto p-6">
-      <h1 className="text-[20px] font-bold text-[#1a1a1a]">Select vehicle</h1>
+      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#0b5cd5]">Step 1</p>
+      <h1 className="mt-0.5 text-[20px] font-bold text-[#1a1a1a]">Select vehicle</h1>
 
       {/* kind selector with sliding highlight */}
       <div className="relative mt-4 inline-flex overflow-hidden rounded-[10px] border-[1.5px] border-[#dfe3e8]">
@@ -64,28 +64,33 @@ export default function SelectVehicle() {
       </div>
 
       {/* layouts for the selected kind — re-keyed so tiles re-animate on change */}
-      <div key={kind} className="mt-5 flex flex-wrap gap-3">
-        {group.options.map((option, i) => (
-          <button
-            key={option.id}
-            type="button"
-            aria-pressed={selected === option.id}
-            onClick={() => setSelected(option.id)}
-            style={{
-              borderColor: selected === option.id ? SELECTED : ACCENT,
-              animationDelay: `${i * 45}ms`,
-            }}
-            className={clsx(
-              'grid h-[88px] w-[92px] animate-tile-in place-items-center rounded-xl border-2 bg-white',
-              'transition-[background-color,box-shadow] duration-150',
-              selected === option.id
-                ? 'bg-[#eef6fb] ring-2 ring-[#0b5cd5]/20'
-                : 'hover:bg-[#f2fafd]',
-            )}
-          >
-            <TrailerGlyph front={option.front} axleGroups={option.axleGroups} />
-          </button>
-        ))}
+      <div key={kind} className="mt-5 flex flex-wrap gap-3.5 pt-1">
+        {group.options.map((option, i) => {
+          const isSel = selected === option.id
+          return (
+            <button
+              key={option.id}
+              type="button"
+              aria-pressed={isSel}
+              onClick={() => setSelected(option.id)}
+              style={{ animationDelay: `${i * 45}ms` }}
+              className={clsx(
+                'relative grid h-[88px] w-[92px] animate-tile-in place-items-center rounded-xl border-2',
+                'transition-[transform,background-color,border-color,box-shadow] duration-150',
+                isSel
+                  ? 'scale-[1.04] border-[#0b5cd5] bg-[#0b5cd5] shadow-lg shadow-[#0b5cd5]/25'
+                  : 'border-[#1f9ed6] bg-white hover:bg-[#f2fafd]',
+              )}
+            >
+              {isSel && (
+                <span className="absolute -right-2 -top-2 grid h-5 w-5 place-items-center rounded-full bg-white text-[#0b5cd5] shadow ring-1 ring-[#0b5cd5]/20">
+                  <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                </span>
+              )}
+              <TrailerGlyph front={option.front} axleGroups={option.axleGroups} selected={isSel} />
+            </button>
+          )
+        })}
       </div>
     </div>
   )
@@ -107,41 +112,51 @@ function axleCenterXs(groups: number[], front: TrailerFront): number[] {
   )
 }
 
-function TrailerGlyph({ front, axleGroups }: { front: TrailerFront; axleGroups: number[] }) {
+function TrailerGlyph({
+  front,
+  axleGroups,
+  selected,
+}: {
+  front: TrailerFront
+  axleGroups: number[]
+  selected?: boolean
+}) {
   const xs = axleCenterXs(axleGroups, front)
+  const c = selected ? '#ffffff' : ACCENT
+  const wheelFill = selected ? '#0b5cd5' : '#ffffff'
   return (
     <svg width="74" height="48" viewBox="0 0 96 62" fill="none" aria-hidden>
-      <rect x="14" y="24" width="68" height="26" rx="4" stroke={ACCENT} strokeWidth="2" />
+      <rect x="14" y="24" width="68" height="26" rx="4" stroke={c} strokeWidth="2" />
 
       {front === 'drawbar' && (
         <>
           <path
             d="M14 44 L7 44 L3 50"
-            stroke={ACCENT}
+            stroke={c}
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-          <circle cx="3" cy="50" r="1.8" fill={ACCENT} />
+          <circle cx="3" cy="50" r="1.8" fill={c} />
         </>
       )}
 
       {front === 'gooseneck' && (
         <>
-          <path d="M14 26 C7 26 8 42 3 45" stroke={ACCENT} strokeWidth="2" strokeLinecap="round" />
-          <circle cx="3" cy="49" r="2.6" stroke={ACCENT} strokeWidth="2" />
+          <path d="M14 26 C7 26 8 42 3 45" stroke={c} strokeWidth="2" strokeLinecap="round" />
+          <circle cx="3" cy="49" r="2.6" stroke={c} strokeWidth="2" />
         </>
       )}
 
       {front === 'rigid' && (
         <>
-          <path d="M14 40 L3 40" stroke={ACCENT} strokeWidth="2" strokeLinecap="round" />
-          <circle cx="3" cy="40" r="1.8" fill={ACCENT} />
+          <path d="M14 40 L3 40" stroke={c} strokeWidth="2" strokeLinecap="round" />
+          <circle cx="3" cy="40" r="1.8" fill={c} />
         </>
       )}
 
       {xs.map((x, i) => (
-        <circle key={i} cx={x} cy="53" r="4.5" fill="#fff" stroke={ACCENT} strokeWidth="2" />
+        <circle key={i} cx={x} cy="53" r="4.5" fill={wheelFill} stroke={c} strokeWidth="2" />
       ))}
     </svg>
   )

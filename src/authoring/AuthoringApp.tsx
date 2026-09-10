@@ -1,6 +1,8 @@
 import { Menu } from 'lucide-react'
 import zfLogo from '../assets/ZF_logo_STD_Blue_3CC.svg'
 import SelectVehicle from './steps/SelectVehicle'
+import Stepper from './Stepper'
+import { authoringSteps } from './steps'
 
 /**
  * Web-based parameter Authoring Tool (Option D). Separate page from the field
@@ -42,6 +44,8 @@ export default function AuthoringApp() {
           GS
         </span>
       </header>
+
+      <Stepper steps={authoringSteps} currentIndex={0} />
 
       {/* Authoring canvas */}
       <main className="flex min-h-0 flex-1 flex-col" data-area="authoring-canvas">
