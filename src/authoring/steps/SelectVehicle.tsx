@@ -5,6 +5,10 @@ import { vehicleGroups, type TrailerFront } from '../vehicles'
 /**
  * Authoring step 1 — "Select vehicle": choose the trailer kind (drawbar /
  * semitrailer / central-axle) and axle layout from a picture grid.
+ *
+ * Layout "L1 — unified strip": all options on one line as labelled clusters with
+ * dividers; wraps cluster-by-cluster when the window is narrow. Alternative
+ * layouts live in public/select-vehicle-styles.html.
  */
 
 const ACCENT = '#1f9ed6'
@@ -14,18 +18,16 @@ export default function SelectVehicle() {
   const [selected, setSelected] = useState<string | null>(null)
 
   return (
-    <div className="min-h-0 flex-1 overflow-auto p-8">
+    <div className="min-h-0 flex-1 overflow-auto p-6">
       <h1 className="text-[20px] font-bold text-[#1a1a1a]">Select vehicle</h1>
 
-      <div className="mt-5 space-y-8">
-        {vehicleGroups.map((group) => (
-          <section key={group.id}>
-            <div className="flex items-center gap-3">
-              <span className="text-[14px] font-bold text-[#1a1a1a]">{group.label}</span>
-              <span className="flex-1 border-t border-dashed border-[#c9c9c9]" />
-            </div>
-
-            <div className="mt-3 flex flex-wrap gap-4">
+      <div className="mt-4 flex flex-wrap items-stretch gap-x-2.5 gap-y-4">
+        {vehicleGroups.map((group, i) => (
+          <div key={group.id} className="flex items-center">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <span className="w-full text-[11px] font-bold uppercase tracking-wide text-[#5a6b7b] sm:w-auto">
+                {group.label}
+              </span>
               {group.options.map((option) => (
                 <button
                   key={option.id}
@@ -33,7 +35,7 @@ export default function SelectVehicle() {
                   aria-pressed={selected === option.id}
                   onClick={() => setSelected(option.id)}
                   className={clsx(
-                    'grid h-24 w-24 place-items-center rounded-2xl border-2 bg-white transition',
+                    'grid h-[60px] w-[68px] place-items-center rounded-xl border-2 bg-white transition',
                     selected === option.id
                       ? 'bg-[#eef6fb] ring-2 ring-[#0b5cd5]/20'
                       : 'hover:bg-[#f2fafd]',
@@ -44,7 +46,10 @@ export default function SelectVehicle() {
                 </button>
               ))}
             </div>
-          </section>
+            {i < vehicleGroups.length - 1 && (
+              <span className="mx-2 hidden w-px self-stretch bg-[#dfe3e8] sm:block" />
+            )}
+          </div>
         ))}
       </div>
     </div>
@@ -70,7 +75,7 @@ function axleCenterXs(groups: number[], front: TrailerFront): number[] {
 function TrailerGlyph({ front, axleGroups }: { front: TrailerFront; axleGroups: number[] }) {
   const xs = axleCenterXs(axleGroups, front)
   return (
-    <svg width="72" height="46" viewBox="0 0 96 62" fill="none" aria-hidden>
+    <svg width="58" height="38" viewBox="0 0 96 62" fill="none" aria-hidden>
       <rect x="14" y="24" width="68" height="26" rx="4" stroke={ACCENT} strokeWidth="2" />
 
       {front === 'drawbar' && (

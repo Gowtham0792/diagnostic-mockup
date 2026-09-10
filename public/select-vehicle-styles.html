@@ -3,270 +3,251 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>"Select vehicle" — styling options</title>
+<title>"Select vehicle" — layout options</title>
 <style>
   :root{
-    --zf-blue:#0b5cd5; --zf-blue-d:#083f93; --wabco-cyan:#1f9ed6;
+    --zf-blue:#0b5cd5; --zf-blue-d:#083f93; --cyan:#1f9ed6;
     --ink:#16202b; --muted:#5a6b7b; --line:#dfe3e8; --bg:#eef1f4; --panel:#fff;
     font-synthesis-weight:none;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);
     font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-  .wrap{max-width:1120px;margin:0 auto;padding:40px 22px 90px}
-  h1{font-size:25px;margin:0 0 4px}
-  .sub{color:var(--muted);margin:0 0 10px;max-width:70ch}
-  .palette{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 8px}
-  .sw{display:flex;align-items:center;gap:7px;background:var(--panel);border:1px solid var(--line);
-    border-radius:8px;padding:5px 9px;font-size:12.5px}
-  .sw i{width:15px;height:15px;border-radius:4px;display:inline-block;border:1px solid rgba(0,0,0,.1)}
+  .wrap{max-width:1080px;margin:0 auto;padding:38px 20px 90px}
+  h1{font-size:24px;margin:0 0 4px}
+  .sub{color:var(--muted);margin:0 0 8px;max-width:74ch}
+  .resizehint{font-size:12.5px;color:var(--muted);background:#fff;border:1px solid var(--line);
+    border-radius:8px;padding:6px 10px;display:inline-block;margin-top:6px}
 
-  section.variant{background:var(--panel);border:1px solid var(--line);border-radius:16px;
-    padding:22px 22px 26px;margin-top:22px}
-  section.variant > h2{font-size:18px;margin:0 0 3px}
-  section.variant > .why{color:var(--muted);font-size:13.5px;margin:0 0 18px}
-  .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
-    color:var(--zf-blue-d);background:#e7f0ff;border-radius:999px;padding:2px 9px;margin-left:8px;vertical-align:2px}
+  section.v{background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:18px 18px 22px;margin-top:20px;overflow:hidden}
+  section.v > h2{font-size:17px;margin:0 0 2px}
+  section.v > .why{color:var(--muted);font-size:13px;margin:0 0 14px}
+  .tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--zf-blue-d);background:#e7f0ff;border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:2px}
 
-  .grouprow{display:flex;align-items:center;gap:12px;margin:18px 0 12px}
-  .grouprow:first-of-type{margin-top:4px}
-  .grouprow b{font-size:13.5px}
-  .grouprow .rule{flex:1;border-top:1px dashed #c7ccd2}
-
-  .tiles{display:flex;flex-wrap:wrap;gap:14px}
-  .tile{background:var(--panel);cursor:pointer;display:grid;place-items:center;transition:.14s}
+  /* shared tile */
+  .tile{background:var(--panel);border:2px solid var(--cyan);border-radius:12px;cursor:pointer;
+    display:grid;place-items:center;transition:.12s;flex:none}
+  .tile:hover{background:#f2fafd}
+  .tile[aria-pressed=true]{border-color:var(--zf-blue);background:#eef6fb;
+    box-shadow:0 0 0 3px rgba(11,92,213,.16)}
   .tile svg{display:block}
 
-  /* ---------- A · Outline tiles (current) ---------- */
-  .vA .tile{width:94px;height:94px;border:2px solid var(--wabco-cyan);border-radius:16px}
-  .vA .tile:hover{background:#f2fafd}
-  .vA .tile[aria-pressed=true]{border-color:var(--zf-blue);background:#eef6fb;
-    box-shadow:0 0 0 4px rgba(11,92,213,.15)}
+  .glabel{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .vdiv{width:1px;align-self:stretch;background:var(--line);margin:0 2px}
 
-  /* ---------- B · Soft filled cards ---------- */
-  .vB .tile{width:104px;height:96px;border:1px solid transparent;border-radius:14px;background:#f3f6f9;
-    box-shadow:0 1px 2px rgba(16,32,50,.06)}
-  .vB .tile:hover{background:#eef2f6;box-shadow:0 3px 10px rgba(16,32,50,.10)}
-  .vB .tile[aria-pressed=true]{background:var(--zf-blue);box-shadow:0 6px 16px rgba(11,92,213,.30)}
-  .vB .tile[aria-pressed=true] svg *{stroke:#fff!important}
-  .vB .tile[aria-pressed=true] svg circle[fill="#fff"],
-  .vB .tile[aria-pressed=true] svg .wheel{fill:var(--zf-blue)!important}
+  /* ---- L1 · Unified strip (wrap) ---- */
+  .L1 .strip{display:flex;flex-wrap:wrap;align-items:center;gap:9px}
+  .L1 .cluster{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .L1 .cluster .glabel{width:100%}
+  @media(min-width:900px){ .L1 .cluster .glabel{width:auto} }
+  .L1 .tile{width:66px;height:60px}
 
-  /* ---------- C · Category first ---------- */
-  .vC .cats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:6px}
-  .vC .cat{flex:1;min-width:170px;border:1.5px solid var(--line);border-radius:14px;background:var(--panel);
-    padding:14px 14px 12px;cursor:pointer;text-align:left;transition:.14s}
-  .vC .cat:hover{border-color:#bcd3f5}
-  .vC .cat[aria-pressed=true]{border-color:var(--zf-blue);background:#f2f7ff}
-  .vC .cat .ct{font-weight:700;font-size:14px;margin-top:8px}
-  .vC .cat .cd{color:var(--muted);font-size:12px}
-  .vC .detail{margin-top:16px;padding-top:14px;border-top:1px dashed #c7ccd2}
-  .vC .tile{width:96px;height:88px;border:2px solid var(--wabco-cyan);border-radius:14px}
-  .vC .tile[aria-pressed=true]{border-color:var(--zf-blue);background:#eef6fb}
+  /* ---- L2 · Compact matrix ---- */
+  .L2 .matrix{display:grid;grid-template-columns:max-content 1fr;gap:10px 16px;align-items:center}
+  .L2 .rl{font-weight:700;font-size:12.5px;white-space:nowrap}
+  .L2 .rt{display:flex;gap:8px;flex-wrap:wrap}
+  .L2 .tile{width:70px;height:62px}
 
-  /* ---------- D · Compact rows ---------- */
-  .vD .rows{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px}
-  @media(max-width:720px){.vD .rows{grid-template-columns:1fr}}
-  .vD .r{display:flex;align-items:center;gap:12px;padding:8px 12px;border:1px solid var(--line);
-    border-radius:10px;cursor:pointer;background:var(--panel);transition:.12s}
-  .vD .r:hover{border-color:#bcd3f5;background:#fafcff}
-  .vD .r[aria-pressed=true]{border-color:var(--zf-blue);background:#f2f7ff}
-  .vD .r .gl{width:66px;flex:none;display:grid;place-items:center}
-  .vD .r .lb{font-size:13.5px;font-weight:600}
-  .vD .r .ds{font-size:12px;color:var(--muted)}
-  .vD .r .rad{margin-left:auto;width:16px;height:16px;border-radius:999px;border:2px solid #c2c9d2;flex:none}
-  .vD .r[aria-pressed=true] .rad{border-color:var(--zf-blue);background:radial-gradient(circle at 50% 50%,var(--zf-blue) 0 5px,#fff 5px 7px,var(--zf-blue) 7px)}
+  /* ---- L3 · Horizontal scroll rail ---- */
+  .L3 .rail{display:flex;gap:10px;align-items:center;overflow-x:auto;padding-bottom:8px;
+    scroll-snap-type:x proximity}
+  .L3 .rail::-webkit-scrollbar{height:8px}
+  .L3 .rail::-webkit-scrollbar-thumb{background:#c7ccd2;border-radius:4px}
+  .L3 .chip{display:flex;flex-direction:column;align-items:center;gap:5px;flex:none;scroll-snap-align:start}
+  .L3 .sep{display:flex;align-items:center;gap:8px;flex:none;padding:0 4px}
+  .L3 .sep .glabel{writing-mode:vertical-rl;transform:rotate(180deg)}
+  .L3 .tile{width:74px;height:64px}
+  .L3 .cap{font-size:11px;color:var(--muted)}
 
-  /* ---------- E · Blueprint (dark) ---------- */
-  .vE{background:#0c1a2b;border-color:#16334f}
-  .vE > h2,.vE .grouprow b{color:#e8f2fb}
-  .vE > .why{color:#8fb0cc}
-  .vE .grouprow .rule{border-top-color:#24455f}
-  .vE .tile{width:100px;height:92px;border:1px solid #1d3f5c;border-radius:12px;
-    background:linear-gradient(180deg,#102338,#0d1c2e)}
-  .vE .tile:hover{border-color:#2f77c0}
-  .vE .tile[aria-pressed=true]{border-color:#41c0ff;box-shadow:0 0 0 3px rgba(65,192,255,.20);background:#123049}
+  /* ---- L4 · Kind selector + one row ---- */
+  .L4 .seg{display:inline-flex;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:14px}
+  .L4 .seg button{border:0;background:var(--panel);padding:8px 16px;font:inherit;font-size:13px;
+    font-weight:600;cursor:pointer;color:var(--muted)}
+  .L4 .seg button + button{border-left:1px solid var(--line)}
+  .L4 .seg button[aria-pressed=true]{background:var(--zf-blue);color:#fff}
+  .L4 .oneRow{display:flex;gap:10px;flex-wrap:wrap}
+  .L4 .tile{width:88px;height:76px}
 
-  .foot{margin-top:44px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+  /* ---- L5 · Tiny chips (label under) ---- */
+  .L5 .flow{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:flex-start}
+  .L5 .grp{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:flex-start}
+  .L5 .grp .glabel{width:100%;margin-bottom:2px}
+  .L5 .chip{display:flex;flex-direction:column;align-items:center;gap:3px}
+  .L5 .tile{width:52px;height:46px;border-width:1.5px;border-radius:9px}
+  .L5 .cap{font-size:10.5px;color:var(--muted);white-space:nowrap}
+  .L5 .vdiv{margin:0 4px}
+
+  .foot{margin-top:40px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
   .foot b{color:var(--ink)}
 </style>
 </head>
 <body>
 <div class="wrap">
+  <h1>"Select vehicle" — layout options</h1>
+  <p class="sub">Same 11 trailers, five ways to lay them out in less space. All wrap /
+  scroll gracefully — drag the window narrow to check.</p>
+  <span class="resizehint">Tip: narrow the browser to see wrap behaviour.</span>
 
-  <h1>"Select vehicle" — styling options</h1>
-  <p class="sub">Same step (choose trailer kind + axle layout), five visual treatments.
-  All use the same trailer glyphs — drawbar / gooseneck / rigid front connector plus
-  the axle groups. Click tiles to see the selected state. Pick one (or a mix) and I'll
-  apply it to the authoring tool.</p>
-
-  <div class="palette">
-    <span class="sw"><i style="background:#0b5cd5"></i> ZF blue #0B5CD5</span>
-    <span class="sw"><i style="background:#083f93"></i> deep #083F93</span>
-    <span class="sw"><i style="background:#1f9ed6"></i> line-art cyan #1F9ED6</span>
-    <span class="sw"><i style="background:#41c0ff"></i> blueprint #41C0FF</span>
-    <span class="sw"><i style="background:#16202b"></i> ink #16202B</span>
-  </div>
-
-  <section class="variant vA" id="vA">
-    <h2>A · Outline tiles <span class="tag">currently live</span></h2>
-    <p class="why">Bright cyan line-art in an outlined rounded square. Light, neutral,
-    reads as "technical". Weak selected state unless reinforced (here: ZF-blue border +
-    glow).</p>
+  <section class="v L1" id="L1">
+    <h2>L1 · Unified strip <span class="tag">recommended</span></h2>
+    <p class="why">One continuous row of all 11. Each kind is a labelled cluster with a
+    thin divider; on wide screens it's a single line, on narrow it wraps cluster by
+    cluster. ~1/3 the height of the current layout.</p>
+    <div class="strip" id="L1-host"></div>
   </section>
 
-  <section class="variant vB" id="vB">
-    <h2>B · Soft filled cards</h2>
-    <p class="why">No borders; a tinted fill + soft shadow gives depth. Strong,
-    unmistakable selected state (solid ZF blue, glyph inverts to white). Feels more
-    like a modern product UI, less like a schematic.</p>
+  <section class="v L2" id="L2">
+    <h2>L2 · Compact matrix</h2>
+    <p class="why">Kind name in a left column, its layouts in a row beside it. Three
+    tidy rows, no wasted vertical space, labels always visible.</p>
+    <div class="matrix" id="L2-host"></div>
   </section>
 
-  <section class="variant vC" id="vC">
-    <h2>C · Category first, then layout</h2>
-    <p class="why">Progressive disclosure: pick the trailer kind, then only that kind's
-    axle layouts appear. Fewer choices on screen at once — best when the list grows or
-    for less-expert users.</p>
-    <div class="cats" id="vC-cats"></div>
-    <div class="detail" id="vC-detail"></div>
+  <section class="v L3" id="L3">
+    <h2>L3 · Horizontal scroll rail</h2>
+    <p class="why">Always a single line; scrolls (or swipes on touch) when it overflows.
+    Axle count captioned under each. Good if the list keeps growing.</p>
+    <div class="rail" id="L3-host"></div>
   </section>
 
-  <section class="variant vD" id="vD">
-    <h2>D · Compact rows</h2>
-    <p class="why">Glyph + label + plain-language axle description + radio. Densest;
-    scannable; carries text so the picture isn't the only cue. Good on smaller screens
-    and for accessibility.</p>
+  <section class="v L4" id="L4">
+    <h2>L4 · Kind selector, then one row</h2>
+    <p class="why">Pick the kind from a segmented control; only that kind's layouts show
+    — never more than four tiles, always one line. Smallest footprint, costs one extra
+    click.</p>
+    <div class="seg" id="L4-seg"></div>
+    <div class="oneRow" id="L4-row"></div>
   </section>
 
-  <section class="variant vE" id="vE">
-    <h2>E · Blueprint (dark)</h2>
-    <p class="why">Dark canvas, glowing cyan glyphs. Distinctive, "engineering
-    workbench" feel — fits an authoring tool aimed at specialists. Higher contrast for
-    the line-art; needs a dark theme throughout the tool to be coherent.</p>
+  <section class="v L5" id="L5">
+    <h2>L5 · Tiny chips with caption</h2>
+    <p class="why">Small borderless-ish glyphs with an axle-count caption, all in one
+    wrapping flow separated by dividers. Densest; the caption carries meaning so the
+    picture can shrink.</p>
+    <div class="flow" id="L5-host"></div>
   </section>
 
   <div class="foot">
-    <b>Recommendation:</b> <b>B</b> for the clearest selected state and a modern feel,
-    or <b>C</b> if the trailer list will keep growing. <b>D</b> is the safe,
-    accessible fallback. Mixing is fine — e.g. C's category step wrapping B's tiles.
+    <b>Recommendation:</b> <b>L1</b> (unified strip) for the authoring tool — one line
+    on desktop, clean wrap when minimized, keeps the labels. <b>L2</b> if you want the
+    kind labels pinned left. <b>L4</b> if screen space is very tight.
   </div>
-
 </div>
 
 <script>
   const GROUPS = [
-    { label:'Drawbar trailer',    desc:'Drawbar hitch, own front axle(s)',
-      items:[['drawbar',[1,1]],['drawbar',[1,2]],['drawbar',[1,3]],['drawbar',[2,2]]] },
-    { label:'Semitrailers',       desc:'Kingpin / gooseneck, no front axle',
-      items:[['gooseneck',[1]],['gooseneck',[2]],['gooseneck',[3]],['gooseneck',[4]]] },
-    { label:'Central axle trailer',desc:'Rigid drawbar, axles near the centre',
-      items:[['rigid',[1]],['rigid',[2]],['rigid',[3]]] },
+    { label:'Drawbar trailer',     items:[['drawbar',[1,1]],['drawbar',[1,2]],['drawbar',[1,3]],['drawbar',[2,2]]] },
+    { label:'Semitrailers',        items:[['gooseneck',[1]],['gooseneck',[2]],['gooseneck',[3]],['gooseneck',[4]]] },
+    { label:'Central axle trailer',items:[['rigid',[1]],['rigid',[2]],['rigid',[3]]] },
   ];
-
-  const groupXs = (center, count) => {
-    const sp = count >= 3 ? 8 : 9;
-    return Array.from({length:count}, (_,i) => center - ((count-1)*sp)/2 + i*sp);
+  const groupXs = (c,n) => { const sp = n>=3?8:9; return Array.from({length:n},(_,i)=>c-((n-1)*sp)/2+i*sp); };
+  const axleXs = (g,f) => {
+    if (g.length===1) return groupXs(f==='gooseneck'?58:46, g[0]);
+    const lo = f==='drawbar'?30:34, hi=70;
+    return g.flatMap((c,i)=>groupXs(lo+((hi-lo)*i)/(g.length-1),c));
   };
-  const axleXs = (groups, front) => {
-    if (groups.length === 1) return groupXs(front === 'gooseneck' ? 58 : 46, groups[0]);
-    const lo = front === 'drawbar' ? 30 : 34, hi = 70;
-    return groups.flatMap((c,i) => groupXs(lo + ((hi-lo)*i)/(groups.length-1), c));
-  };
-  function glyph(front, groups, stroke, w, h){
-    stroke = stroke || '#1f9ed6';
-    let f = '';
-    if (front === 'drawbar')
-      f = `<path d="M14 44 L7 44 L3 50" stroke="${stroke}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="3" cy="50" r="1.8" fill="${stroke}"/>`;
-    if (front === 'gooseneck')
-      f = `<path d="M14 26 C7 26 8 42 3 45" stroke="${stroke}" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="3" cy="49" r="2.6" stroke="${stroke}" stroke-width="2" fill="none"/>`;
-    if (front === 'rigid')
-      f = `<path d="M14 40 L3 40" stroke="${stroke}" stroke-width="2" stroke-linecap="round"/><circle cx="3" cy="40" r="1.8" fill="${stroke}"/>`;
-    const wheels = axleXs(groups, front)
-      .map(x => `<circle class="wheel" cx="${x}" cy="53" r="4.5" fill="#fff" stroke="${stroke}" stroke-width="2"/>`).join('');
-    return `<svg viewBox="0 0 96 62" width="${w||76}" height="${h||49}" fill="none" aria-hidden="true">
-      <rect x="14" y="24" width="68" height="26" rx="4" stroke="${stroke}" stroke-width="2"/>${f}${wheels}</svg>`;
+  function glyph(f,g,w,h){
+    const s = '#1f9ed6';
+    let fr='';
+    if(f==='drawbar') fr=`<path d="M14 44 L7 44 L3 50" stroke="${s}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="3" cy="50" r="1.8" fill="${s}"/>`;
+    if(f==='gooseneck') fr=`<path d="M14 26 C7 26 8 42 3 45" stroke="${s}" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="3" cy="49" r="2.6" stroke="${s}" stroke-width="2" fill="none"/>`;
+    if(f==='rigid') fr=`<path d="M14 40 L3 40" stroke="${s}" stroke-width="2" stroke-linecap="round"/><circle cx="3" cy="40" r="1.8" fill="${s}"/>`;
+    const wh = axleXs(g,f).map(x=>`<circle cx="${x}" cy="53" r="4.5" fill="#fff" stroke="${s}" stroke-width="2"/>`).join('');
+    return `<svg viewBox="0 0 96 62" width="${w}" height="${h}" fill="none" aria-hidden="true">
+      <rect x="14" y="24" width="68" height="26" rx="4" stroke="${s}" stroke-width="2"/>${fr}${wh}</svg>`;
   }
-  const axleText = groups => {
-    const total = groups.reduce((a,b)=>a+b,0);
-    const layout = groups.join('+');
-    return `${total} axle${total>1?'s':''}${groups.length>1?` (${layout})`:''}`;
-  };
-
-  function press(container, el){
-    container.querySelectorAll('[aria-pressed]').forEach(n => n.setAttribute('aria-pressed','false'));
+  const cap = g => { const t = g.reduce((a,b)=>a+b,0); return `${t} axle${t>1?'s':''}${g.length>1?` · ${g.join('+')}`:''}`; };
+  function press(scope, el){
+    scope.querySelectorAll('.tile[aria-pressed]').forEach(n=>n.setAttribute('aria-pressed','false'));
     el.setAttribute('aria-pressed','true');
   }
+  const tile = (f,g,w,h) => {
+    const b = document.createElement('button');
+    b.className = 'tile'; b.type='button'; b.setAttribute('aria-pressed','false');
+    b.innerHTML = glyph(f,g,w,h);
+    b.onclick = () => press(document.body, b);
+    return b;
+  };
 
-  // A, B, E — plain tile grids
-  ['vA','vB','vE'].forEach(v => {
-    const host = document.getElementById(v);
-    const stroke = v === 'vE' ? '#41c0ff' : '#1f9ed6';
-    GROUPS.forEach(g => {
-      const row = document.createElement('div');
-      row.className = 'grouprow';
-      row.innerHTML = `<b>${g.label}</b><span class="rule"></span>`;
-      host.appendChild(row);
-      const grid = document.createElement('div');
-      grid.className = 'tiles';
-      g.items.forEach(([front, groups]) => {
-        const b = document.createElement('button');
-        b.className = 'tile'; b.type = 'button'; b.setAttribute('aria-pressed','false');
-        b.innerHTML = glyph(front, groups, stroke, v==='vB'?80:76);
-        b.onclick = () => press(host, b);
-        grid.appendChild(b);
-      });
-      host.appendChild(grid);
-    });
-  });
-
-  // C — category first
+  // L1 — unified strip
   (function(){
-    const cats = document.getElementById('vC-cats');
-    const detail = document.getElementById('vC-detail');
-    GROUPS.forEach((g, gi) => {
-      const c = document.createElement('button');
-      c.className = 'cat'; c.type = 'button'; c.setAttribute('aria-pressed', gi===0 ? 'true':'false');
-      c.innerHTML = `${glyph(g.items[g.items.length-1][0], g.items[g.items.length-1][1], '#0b5cd5', 84, 40)}
-        <div class="ct">${g.label}</div><div class="cd">${g.desc}</div>`;
-      c.onclick = () => { press(cats, c); renderDetail(gi); };
-      cats.appendChild(c);
+    const host = document.getElementById('L1-host');
+    GROUPS.forEach((grp,i) => {
+      const cl = document.createElement('div'); cl.className='cluster';
+      const lb = document.createElement('span'); lb.className='glabel'; lb.textContent = grp.label;
+      cl.appendChild(lb);
+      grp.items.forEach(([f,g]) => cl.appendChild(tile(f,g,58,52)));
+      host.appendChild(cl);
+      if (i < GROUPS.length-1){ const d=document.createElement('div'); d.className='vdiv'; host.appendChild(d); }
     });
-    function renderDetail(gi){
-      const g = GROUPS[gi];
-      detail.innerHTML = `<div class="grouprow" style="margin-top:0"><b>${g.label} — axle layout</b><span class="rule"></span></div>
-        <div class="tiles" id="vC-tiles"></div>`;
-      const grid = detail.querySelector('#vC-tiles');
-      g.items.forEach(([front, groups]) => {
-        const b = document.createElement('button');
-        b.className = 'tile'; b.type = 'button'; b.setAttribute('aria-pressed','false');
-        b.innerHTML = glyph(front, groups, '#1f9ed6', 74);
-        b.onclick = () => press(grid, b);
-        grid.appendChild(b);
-      });
-    }
-    renderDetail(0);
   })();
 
-  // D — compact rows
+  // L2 — matrix
   (function(){
-    const host = document.getElementById('vD');
-    GROUPS.forEach(g => {
-      const row = document.createElement('div');
-      row.className = 'grouprow';
-      row.innerHTML = `<b>${g.label}</b><span class="rule"></span>`;
-      host.appendChild(row);
-      const rows = document.createElement('div');
-      rows.className = 'rows';
-      g.items.forEach(([front, groups]) => {
-        const r = document.createElement('button');
-        r.className = 'r'; r.type = 'button'; r.setAttribute('aria-pressed','false');
-        r.innerHTML = `<span class="gl">${glyph(front, groups, '#1f9ed6', 60, 40)}</span>
-          <span><span class="lb">${g.label}</span><br><span class="ds">${axleText(groups)}</span></span>
-          <span class="rad"></span>`;
-        r.onclick = () => press(host, r);
-        rows.appendChild(r);
+    const host = document.getElementById('L2-host');
+    GROUPS.forEach(grp => {
+      const rl = document.createElement('div'); rl.className='rl'; rl.textContent = grp.label;
+      const rt = document.createElement('div'); rt.className='rt';
+      grp.items.forEach(([f,g]) => rt.appendChild(tile(f,g,62,54)));
+      host.appendChild(rl); host.appendChild(rt);
+    });
+  })();
+
+  // L3 — scroll rail
+  (function(){
+    const host = document.getElementById('L3-host');
+    GROUPS.forEach((grp,i) => {
+      const sep = document.createElement('div'); sep.className='sep';
+      sep.innerHTML = `<span class="glabel">${grp.label}</span>`;
+      host.appendChild(sep);
+      grp.items.forEach(([f,g]) => {
+        const c = document.createElement('div'); c.className='chip';
+        c.appendChild(tile(f,g,66,56));
+        const cp = document.createElement('span'); cp.className='cap'; cp.textContent = cap(g);
+        c.appendChild(cp);
+        host.appendChild(c);
       });
-      host.appendChild(rows);
+    });
+  })();
+
+  // L4 — kind selector + one row
+  (function(){
+    const seg = document.getElementById('L4-seg'), row = document.getElementById('L4-row');
+    GROUPS.forEach((grp,gi) => {
+      const b = document.createElement('button'); b.type='button';
+      b.setAttribute('aria-pressed', gi===0?'true':'false');
+      b.textContent = grp.label;
+      b.onclick = () => {
+        seg.querySelectorAll('button').forEach(n=>n.setAttribute('aria-pressed','false'));
+        b.setAttribute('aria-pressed','true'); render(gi);
+      };
+      seg.appendChild(b);
+    });
+    function render(gi){
+      row.innerHTML = '';
+      GROUPS[gi].items.forEach(([f,g]) => row.appendChild(tile(f,g,74,62)));
+    }
+    render(0);
+  })();
+
+  // L5 — tiny chips
+  (function(){
+    const host = document.getElementById('L5-host');
+    GROUPS.forEach((grp,i) => {
+      const g = document.createElement('div'); g.className='grp';
+      const lb = document.createElement('span'); lb.className='glabel'; lb.textContent = grp.label;
+      g.appendChild(lb);
+      grp.items.forEach(([f,gr]) => {
+        const c = document.createElement('div'); c.className='chip';
+        c.appendChild(tile(f,gr,44,38));
+        const cp = document.createElement('span'); cp.className='cap'; cp.textContent = cap(gr);
+        c.appendChild(cp);
+        g.appendChild(c);
+      });
+      host.appendChild(g);
+      if (i < GROUPS.length-1){ const d=document.createElement('div'); d.className='vdiv'; host.appendChild(d); }
     });
   })();
 </script>
