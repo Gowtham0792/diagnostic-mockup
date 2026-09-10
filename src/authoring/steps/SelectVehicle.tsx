@@ -33,10 +33,11 @@ export default function SelectVehicle() {
 
   return (
     <div className="min-h-0 flex-1 overflow-auto p-6">
-      <div className="flex items-baseline gap-2.5">
-        <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#0b5cd5]">Step 1</span>
-        <h1 className="text-[20px] font-bold text-[#1a1a1a]">Select vehicle</h1>
-      </div>
+      <h1 className="text-[19px] font-bold tracking-tight">
+        <span className="text-[#0b5cd5]">Step 1</span>
+        <span className="px-2 font-normal text-[#c1c7cf]">/</span>
+        <span className="text-[#1a1a1a]">Select vehicle</span>
+      </h1>
 
       {/* kind selector with sliding highlight */}
       <div className="relative mt-4 inline-flex overflow-hidden rounded-[10px] border-[1.5px] border-[#dfe3e8]">
