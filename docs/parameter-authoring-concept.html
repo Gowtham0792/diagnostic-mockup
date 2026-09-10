@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>iABS Parameterization — Split-Tool Concept (Option D)</title>
+<style>
+  :root{
+    --blue:#0b5cd5; --blue-d:#083f93; --ink:#16202b; --muted:#5a6b7b;
+    --line:#d9dce1; --bg:#f4f6f9; --panel:#ffffff; --green:#1c9e5a;
+    --amber:#c77700; --red:#d0332c; --wash:#eef4ff;
+    --radius:12px; --maxw:1080px;
+    font-synthesis-weight:none;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:40px 24px 80px}
+  header.doc{
+    background:linear-gradient(180deg,var(--blue),var(--blue-d));
+    color:#fff; border-radius:var(--radius);
+    padding:28px 28px 24px; margin-bottom:28px;
+  }
+  header.doc .kicker{
+    text-transform:uppercase; letter-spacing:.14em; font-size:12px;
+    font-weight:700; opacity:.8; margin-bottom:8px;
+  }
+  header.doc h1{margin:0 0 8px; font-size:27px; line-height:1.25}
+  header.doc p{margin:0; opacity:.92; max-width:62ch}
+  h2{
+    font-size:20px; margin:44px 0 6px; padding-top:14px;
+    border-top:2px solid var(--line);
+  }
+  h2 .n{
+    display:inline-grid; place-items:center; width:26px; height:26px;
+    background:var(--blue); color:#fff; border-radius:7px; font-size:14px;
+    margin-right:10px; vertical-align:2px;
+  }
+  .lede{color:var(--muted); margin:4px 0 18px; max-width:70ch}
+  figure{
+    margin:0 0 10px; background:var(--panel); border:1px solid var(--line);
+    border-radius:var(--radius); padding:18px; overflow-x:auto;
+  }
+  figure svg{display:block; margin:0 auto; max-width:100%; height:auto}
+  figcaption{
+    color:var(--muted); font-size:13.5px; margin-top:10px; text-align:center;
+  }
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{
+    background:var(--panel); border:1px solid var(--line);
+    border-radius:var(--radius); padding:16px 18px;
+  }
+  .card h3{margin:0 0 6px; font-size:15px}
+  .card.k-blue{border-left:4px solid var(--blue)}
+  .card.k-green{border-left:4px solid var(--green)}
+  .card.k-amber{border-left:4px solid var(--amber)}
+  ul.tight{margin:6px 0 0; padding-left:20px}
+  ul.tight li{margin:3px 0}
+  table{
+    width:100%; border-collapse:collapse; background:var(--panel);
+    border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;
+    font-size:14.5px;
+  }
+  th,td{text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+  th{background:var(--wash); font-size:12.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--blue-d)}
+  tr:last-child td{border-bottom:0}
+  code{
+    background:#eef1f5; border:1px solid var(--line); border-radius:5px;
+    padding:1px 6px; font:13px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  .pill{
+    display:inline-block; padding:2px 9px; border-radius:999px; font-size:12px;
+    font-weight:700; letter-spacing:.02em;
+  }
+  .pill.free{background:#e7f6ee; color:var(--green); border:1px solid #b7e3c9}
+  .note{
+    background:var(--wash); border:1px solid #cfe0ff; border-radius:10px;
+    padding:12px 14px; font-size:14px; margin:14px 0 0;
+  }
+  .foot{margin-top:56px; color:var(--muted); font-size:13px; border-top:2px solid var(--line); padding-top:16px}
+  /* SVG helpers */
+  .s-box{fill:#fff; stroke:var(--line); stroke-width:1.5}
+  .s-box-blue{fill:var(--wash); stroke:var(--blue); stroke-width:1.5}
+  .s-box-dark{fill:var(--blue); stroke:var(--blue-d); stroke-width:1.5}
+  .s-t{font:600 13px -apple-system,"Segoe UI",Roboto,sans-serif; fill:var(--ink)}
+  .s-t-sm{font:12px -apple-system,"Segoe UI",Roboto,sans-serif; fill:var(--muted)}
+  .s-t-w{font:600 13px -apple-system,"Segoe UI",Roboto,sans-serif; fill:#fff}
+  .s-t-wsm{font:12px -apple-system,"Segoe UI",Roboto,sans-serif; fill:#dbe6ff}
+  .s-lbl{font:700 11px -apple-system,"Segoe UI",Roboto,sans-serif; fill:var(--blue-d); letter-spacing:.06em}
+  .s-line{stroke:var(--muted); stroke-width:1.6; fill:none}
+  .s-line-blue{stroke:var(--blue); stroke-width:2; fill:none}
+  .s-dash{stroke:var(--muted); stroke-width:1.6; fill:none; stroke-dasharray:5 4}
+  .s-num{fill:var(--blue)}
+  .s-num-t{font:700 12px -apple-system,"Segoe UI",Roboto,sans-serif; fill:#fff}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc">
+  <div class="kicker">Concept note · Option D</div>
+  <h1>Split the parameterization tool by audience</h1>
+  <p>One web-based <strong>authoring tool</strong> holds all the dependency and
+  consistency logic. The field <strong>ZF [pro] Diagnostics Suite</strong> only
+  fetches a finished, validated parameter set by <strong>ID</strong> and writes it to
+  the ECU. The two are linked through a shared back end.</p>
+</header>
+
+<h2><span class="n">1</span>The problem today</h2>
+<p class="lede">All the intelligence — trailer-type rules, sensor/modulator
+compatibility, "not-permitted" combinations, plausibility checks — is hand-coded
+inside the diagnostic GUI that the installer uses. That GUI is expensive to specify,
+build and regression-test, and it still asks an installer with little system
+knowledge to make engineering decisions.</p>
+
+<figure>
+<svg viewBox="0 0 760 250" role="img" aria-label="Current monolithic diagnostic tool">
+  <rect x="40" y="30" width="380" height="190" rx="12" class="s-box"/>
+  <text x="60" y="55" class="s-lbl">ZF [PRO] DIAGNOSTICS SUITE (FIELD)</text>
+  <rect x="60" y="70" width="340" height="34" rx="7" class="s-box-blue"/>
+  <text x="75" y="91" class="s-t">Parameter entry screens &amp; modal dialogs</text>
+  <rect x="60" y="112" width="340" height="34" rx="7" class="s-box-blue"/>
+  <text x="75" y="133" class="s-t">Dependency logic · consistency checks</text>
+  <rect x="60" y="154" width="340" height="34" rx="7" class="s-box-blue"/>
+  <text x="75" y="175" class="s-t">"Not permitted" rules · plausibility</text>
+  <rect x="60" y="196" width="340" height="14" rx="5" class="s-box-blue"/>
+  <text x="75" y="207" class="s-t-sm">ECU read / write</text>
+
+  <path d="M470 125 L560 125" class="s-line"/>
+  <polygon points="560,120 570,125 560,130" class="s-num"/>
+  <circle cx="640" cy="125" r="34" class="s-box"/>
+  <text x="640" y="121" text-anchor="middle" class="s-t">Installer</text>
+  <text x="640" y="138" text-anchor="middle" class="s-t-sm">minimal</text>
+  <text x="640" y="152" text-anchor="middle" class="s-t-sm">system knowledge</text>
+
+  <text x="230" y="243" text-anchor="middle" class="s-t-sm">Everything is built, tested and shipped in the one tool the customer touches.</text>
+</svg>
+<figcaption>Current state — a single heavy tool carries the rules <em>and</em> faces the least-expert user.</figcaption>
+</figure>
+
+<h2><span class="n">2</span>The concept — two tools, one back end</h2>
+<p class="lede">Separate <strong>who defines the configuration</strong> from
+<strong>who applies it to a trailer</strong>. The hard engineering logic moves to a
+web authoring tool used by a small number of ZF / OEM engineers. The field tool
+becomes a thin client.</p>
+
+<figure>
+<svg viewBox="0 0 860 340" role="img" aria-label="Split architecture with shared backend">
+  <!-- Authoring tool -->
+  <rect x="30" y="40" width="250" height="150" rx="12" class="s-box-blue"/>
+  <text x="45" y="64" class="s-lbl">WEB AUTHORING TOOL</text>
+  <text x="45" y="86" class="s-t">Engineer defines &amp; validates</text>
+  <text x="45" y="106" class="s-t-sm">the full parameter set</text>
+  <rect x="45" y="118" width="220" height="26" rx="6" class="s-box"/>
+  <text x="56" y="135" class="s-t-sm">All dependency / consistency rules</text>
+  <rect x="45" y="150" width="220" height="26" rx="6" class="s-box"/>
+  <text x="56" y="167" class="s-t-sm">Publish → get a Configuration ID</text>
+
+  <!-- Backend -->
+  <rect x="330" y="60" width="200" height="110" rx="12" class="s-box-dark"/>
+  <text x="345" y="84" class="s-lbl" style="fill:#cfe0ff">SHARED BACK END</text>
+  <text x="345" y="106" class="s-t-w">Parameter-set registry</text>
+  <text x="345" y="126" class="s-t-wsm">stores every published set</text>
+  <text x="345" y="146" class="s-t-wsm">keyed by Configuration ID</text>
+  <text x="345" y="162" class="s-t-wsm">+ audit log of writes</text>
+
+  <!-- Field tool -->
+  <rect x="580" y="40" width="250" height="150" rx="12" class="s-box"/>
+  <text x="595" y="64" class="s-lbl">ZF [PRO] DIAGNOSTICS SUITE</text>
+  <text x="595" y="86" class="s-t">Installer enters the ID</text>
+  <rect x="595" y="98" width="220" height="26" rx="6" class="s-box-blue"/>
+  <text x="606" y="115" class="s-t-sm">Fetch validated set by ID</text>
+  <rect x="595" y="130" width="220" height="26" rx="6" class="s-box-blue"/>
+  <text x="606" y="147" class="s-t-sm">Plain-language confirm</text>
+  <rect x="595" y="162" width="220" height="20" rx="6" class="s-box-blue"/>
+  <text x="606" y="176" class="s-t-sm">Write to ECU</text>
+
+  <!-- links -->
+  <path d="M280 120 L330 115" class="s-line-blue"/>
+  <polygon points="330,110 340,115 330,120" fill="var(--blue)"/>
+  <text x="292" y="108" class="s-lbl">publish</text>
+
+  <path d="M530 120 L580 120" class="s-line-blue"/>
+  <polygon points="530,115 520,120 530,125" fill="var(--blue)"/>
+  <text x="536" y="110" class="s-lbl">fetch by ID</text>
+
+  <!-- ID token -->
+  <rect x="330" y="235" width="200" height="46" rx="10" class="s-box" style="stroke:var(--amber)"/>
+  <text x="430" y="255" text-anchor="middle" class="s-lbl" style="fill:var(--amber)">CONFIGURATION ID</text>
+  <text x="430" y="273" text-anchor="middle" class="s-t">ZF-7Q2K-9F3</text>
+  <path d="M430 190 L430 235" class="s-dash"/>
+  <text x="300" y="212" class="s-t-sm">the only thing that travels from engineer to installer</text>
+
+  <text x="430" y="315" text-anchor="middle" class="s-t-sm">Engineers (few, trained)  ·  Back end (system of record)  ·  Installers (many)</text>
+</svg>
+<figcaption>Rules live once, in the authoring tool. The field tool never re-implements them.</figcaption>
+</figure>
+
+<div class="grid2">
+  <div class="card k-blue">
+    <h3>Web authoring tool <span class="pill free">no licence · linked</span></h3>
+    <ul class="tight">
+      <li>Browser-based, reached by a plain link — no dongle, no per-seat licence.</li>
+      <li>Used by ZF / OEM application engineers to build one validated parameter set per trailer variant.</li>
+      <li>Carries <strong>all</strong> the dependency &amp; consistency logic (e.g. drawbar ⇒ 4S/3M only; front-axle sensor ⇒ 4-sensor layout).</li>
+      <li>On publish, the back end mints a short <strong>Configuration ID</strong>.</li>
+      <li>UI to be modelled separately.</li>
+    </ul>
+  </div>
+  <div class="card k-green">
+    <h3>ZF [pro] Diagnostics Suite (field)</h3>
+    <ul class="tight">
+      <li>Installer opens Parameterization, types (or scans) the Configuration ID.</li>
+      <li>Pulls the finished set from the back end — <strong>no rule engine on board</strong>.</li>
+      <li>Shows a plain-language summary + a short whitelist of site values (tyre size, service interval).</li>
+      <li>Writes to the ECU and reports completion back to the back end.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="note"><strong>Link, not licence.</strong> The authoring tool is not sold
+or licence-gated. It is <em>linked</em> to the diagnostic suite only through the
+back end: the diagnostic suite trusts any valid Configuration ID the back end can
+resolve. Access control on <em>authoring</em> is a separate, lightweight login.</div>
+
+<h2><span class="n">3</span>End-to-end flow</h2>
+<p class="lede">From "engineer decides the braking configuration" to "trailer ECU is
+parameterized" — the Configuration ID is the hand-off.</p>
+
+<figure>
+<svg viewBox="0 0 820 430" role="img" aria-label="End to end sequence">
+  <!-- lanes -->
+  <text x="120" y="26" text-anchor="middle" class="s-lbl">ENGINEER · WEB AUTHORING TOOL</text>
+  <text x="410" y="26" text-anchor="middle" class="s-lbl">SHARED BACK END</text>
+  <text x="700" y="26" text-anchor="middle" class="s-lbl">INSTALLER · [PRO] DIAGNOSTICS SUITE</text>
+  <line x1="270" y1="34" x2="270" y2="410" class="s-dash"/>
+  <line x1="550" y1="34" x2="550" y2="410" class="s-dash"/>
+
+  <!-- step 1 -->
+  <circle cx="34" cy="64" r="12" class="s-num"/><text x="34" y="68" text-anchor="middle" class="s-num-t">1</text>
+  <rect x="54" y="48" width="200" height="46" rx="8" class="s-box"/>
+  <text x="66" y="66" class="s-t">Build the parameter set</text>
+  <text x="66" y="83" class="s-t-sm">rules validate every choice</text>
+
+  <!-- step 2 -->
+  <circle cx="34" cy="132" r="12" class="s-num"/><text x="34" y="136" text-anchor="middle" class="s-num-t">2</text>
+  <rect x="54" y="116" width="200" height="40" rx="8" class="s-box"/>
+  <text x="66" y="140" class="s-t">Publish</text>
+  <path d="M254 136 L330 136" class="s-line-blue"/><polygon points="330,131 340,136 330,141" fill="var(--blue)"/>
+
+  <!-- step 3 backend -->
+  <circle cx="300" cy="188" r="12" class="s-num"/><text x="300" y="192" text-anchor="middle" class="s-num-t">3</text>
+  <rect x="320" y="172" width="180" height="52" rx="8" class="s-box-dark"/>
+  <text x="332" y="192" class="s-t-w">Store set · mint ID</text>
+  <text x="332" y="210" class="s-t-wsm">ZF-7Q2K-9F3</text>
+
+  <!-- step 4 -->
+  <circle cx="34" cy="252" r="12" class="s-num"/><text x="34" y="256" text-anchor="middle" class="s-num-t">4</text>
+  <rect x="54" y="236" width="470" height="42" rx="8" class="s-box" style="stroke:var(--amber)"/>
+  <text x="66" y="254" class="s-t">ID goes to the customer</text>
+  <text x="66" y="270" class="s-t-sm">build sheet · QR label on the trailer · e-mail · fleet system</text>
+
+  <!-- step 5 -->
+  <circle cx="536" cy="316" r="12" class="s-num"/><text x="536" y="320" text-anchor="middle" class="s-num-t">5</text>
+  <rect x="556" y="300" width="236" height="44" rx="8" class="s-box"/>
+  <text x="568" y="318" class="s-t">Enter / scan the ID</text>
+  <text x="568" y="335" class="s-t-sm">in Parameterization</text>
+  <path d="M556 322 L500 322 L500 260" class="s-line-blue"/>
+  <polygon points="495,260 500,250 505,260" fill="var(--blue)"/>
+
+  <!-- step 6 -->
+  <circle cx="300" cy="322" r="12" class="s-num"/><text x="300" y="326" text-anchor="middle" class="s-num-t">6</text>
+  <rect x="320" y="356" width="180" height="40" rx="8" class="s-box-dark"/>
+  <text x="332" y="380" class="s-t-w">Resolve ID → return set</text>
+  <path d="M556 330 L512 376" class="s-line"/><polygon points="512,371 508,381 519,378" fill="var(--muted)"/>
+  <path d="M320 376 L292 376 L292 344" class="s-line-blue"/>
+
+  <!-- step 7 -->
+  <circle cx="536" cy="392" r="12" class="s-num"/><text x="536" y="396" text-anchor="middle" class="s-num-t">7</text>
+  <rect x="556" y="376" width="236" height="44" rx="8" class="s-box-blue"/>
+  <text x="568" y="394" class="s-t">Confirm summary → write ECU</text>
+  <text x="568" y="410" class="s-t-sm">completion logged back to back end</text>
+</svg>
+<figcaption>The installer never chooses a layout or resolves a rule — they confirm a
+set an engineer already validated.</figcaption>
+</figure>
+
+<h2><span class="n">4</span>What moves where</h2>
+<table>
+  <tr><th>Responsibility</th><th>Web authoring tool</th><th>Shared back end</th><th>[pro] Diagnostics Suite</th></tr>
+  <tr><td>Dependency &amp; consistency rules</td><td><strong>Owns all of it</strong></td><td>—</td><td>None</td></tr>
+  <tr><td>"Not-permitted" combinations</td><td>Prevented at authoring time</td><td>—</td><td>Cannot occur (set is pre-validated)</td></tr>
+  <tr><td>Parameter-set storage &amp; versioning</td><td>Edits &amp; publishes</td><td><strong>System of record</strong></td><td>Read-only fetch</td></tr>
+  <tr><td>Configuration ID</td><td>Receives on publish</td><td><strong>Mints &amp; resolves</strong></td><td>Accepts as input</td></tr>
+  <tr><td>Site values (tyre size, service interval)</td><td>Marks which are editable</td><td>Carries the whitelist</td><td><strong>Installer edits the whitelist only</strong></td></tr>
+  <tr><td>ECU read / write</td><td>None</td><td>—</td><td><strong>Owns it</strong></td></tr>
+  <tr><td>Audit (who wrote what, when)</td><td>—</td><td><strong>Records</strong></td><td>Reports completion</td></tr>
+  <tr><td>Access control</td><td>Lightweight engineer login</td><td>Validates ID + token</td><td>No licence tie to authoring</td></tr>
+</table>
+
+<h2><span class="n">5</span>Why this is cheaper to build</h2>
+<figure>
+<svg viewBox="0 0 760 210" role="img" aria-label="Field tool shrinks">
+  <text x="40" y="28" class="s-lbl">FIELD TOOL — BEFORE</text>
+  <rect x="40" y="38" width="300" height="140" rx="10" class="s-box"/>
+  <rect x="52" y="50" width="276" height="24" rx="5" class="s-box-blue"/><text x="62" y="67" class="s-t-sm">Parameter screens</text>
+  <rect x="52" y="80" width="276" height="24" rx="5" class="s-box-blue"/><text x="62" y="97" class="s-t-sm">Rule engine</text>
+  <rect x="52" y="110" width="276" height="24" rx="5" class="s-box-blue"/><text x="62" y="127" class="s-t-sm">Consistency / plausibility checks</text>
+  <rect x="52" y="140" width="276" height="24" rx="5" class="s-box-blue"/><text x="62" y="157" class="s-t-sm">ECU read / write</text>
+
+  <path d="M360 108 L410 108" class="s-line"/><polygon points="410,103 420,108 410,113" fill="var(--muted)"/>
+
+  <text x="440" y="28" class="s-lbl">FIELD TOOL — AFTER</text>
+  <rect x="440" y="38" width="280" height="90" rx="10" class="s-box"/>
+  <rect x="452" y="50" width="256" height="24" rx="5" class="s-box-blue"/><text x="462" y="67" class="s-t-sm">Enter ID → fetch set</text>
+  <rect x="452" y="80" width="256" height="24" rx="5" class="s-box-blue"/><text x="462" y="97" class="s-t-sm">Confirm summary → write ECU</text>
+  <text x="440" y="150" class="s-t-sm">Rule engine + checks are gone from the shipped field tool.</text>
+  <text x="440" y="170" class="s-t-sm">They are specified &amp; tested once, in the authoring tool.</text>
+</svg>
+<figcaption>The combinatorial test surface collapses: the field tool has no valid /
+invalid combinations to enumerate.</figcaption>
+</figure>
+
+<div class="grid2">
+  <div class="card k-green">
+    <h3>Effort saved</h3>
+    <ul class="tight">
+      <li>Rules written &amp; regression-tested <strong>once</strong>, not per field-tool screen.</li>
+      <li>Field tool requirements shrink to: ID entry, fetch, summary, whitelist edit, write, report.</li>
+      <li>New trailer variant = new authored template — <strong>no field-tool release</strong>.</li>
+      <li>Authoring tool has few users → lighter UX, faster iteration, no dongle logistics.</li>
+    </ul>
+  </div>
+  <div class="card k-amber">
+    <h3>Open questions to resolve</h3>
+    <ul class="tight">
+      <li>Offline case — cache the last resolved set on the diagnostic PC for no-connectivity workshops?</li>
+      <li>ID format &amp; anti-typo (checksum, QR, length).</li>
+      <li>Template versioning — can a published ID be superseded, and what does the field tool show?</li>
+      <li>Who may author, and how is that login managed?</li>
+      <li>Back-end ownership — existing ZF cloud service vs. new.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="foot">
+  Concept note for the trailer iABS parameterization redesign · Option D (audience
+  split). The web authoring tool UI will be modelled separately; this document covers
+  only the split, the back-end link, and the Configuration ID hand-off.
+</div>
+
+</div>
+</body>
+</html>
