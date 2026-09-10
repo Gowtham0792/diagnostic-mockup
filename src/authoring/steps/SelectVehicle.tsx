@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 import { vehicleGroups, type TrailerFront } from '../vehicles'
 
@@ -8,6 +8,10 @@ import { vehicleGroups, type TrailerFront } from '../vehicles'
  * Layout "L4": pick the trailer kind from a segmented control, then only that
  * kind's axle layouts are shown as a single row of tiles. Alternative layouts
  * live in public/select-vehicle-styles.html.
+ *
+ * Transitions: the segmented control has a sliding highlight pill; changing the
+ * kind re-keys the tile row so the tiles replay a staggered "tile-in" animation
+ * (see tailwind.config.js). Honours prefers-reduced-motion via src/index.css.
  */
 
 const ACCENT = '#1f9ed6'
@@ -17,24 +21,41 @@ export default function SelectVehicle() {
   const [kind, setKind] = useState(vehicleGroups[0].id)
   const [selected, setSelected] = useState<string | null>(null)
 
-  const group = vehicleGroups.find((g) => g.id === kind) ?? vehicleGroups[0]
+  const activeIndex = Math.max(0, vehicleGroups.findIndex((g) => g.id === kind))
+  const group = vehicleGroups[activeIndex]
+
+  const btnRefs = useRef<(HTMLButtonElement | null)[]>([])
+  const [pill, setPill] = useState({ left: 0, width: 0 })
+
+  useLayoutEffect(() => {
+    const el = btnRefs.current[activeIndex]
+    if (el) setPill({ left: el.offsetLeft, width: el.offsetWidth })
+  }, [activeIndex])
 
   return (
     <div className="min-h-0 flex-1 overflow-auto p-6">
       <h1 className="text-[20px] font-bold text-[#1a1a1a]">Select vehicle</h1>
 
-      {/* kind selector */}
-      <div className="mt-4 inline-flex overflow-hidden rounded-[10px] border-[1.5px] border-[#dfe3e8]">
+      {/* kind selector with sliding highlight */}
+      <div className="relative mt-4 inline-flex overflow-hidden rounded-[10px] border-[1.5px] border-[#dfe3e8]">
+        <span
+          aria-hidden
+          className="absolute inset-y-0 rounded-[8px] bg-[#0b5cd5] transition-[left,width] duration-300 ease-[cubic-bezier(0.2,0.7,0.3,1)]"
+          style={{ left: pill.left, width: pill.width }}
+        />
         {vehicleGroups.map((g, i) => (
           <button
             key={g.id}
+            ref={(el) => {
+              btnRefs.current[i] = el
+            }}
             type="button"
             aria-pressed={kind === g.id}
             onClick={() => setKind(g.id)}
             className={clsx(
-              'px-4 py-2 text-[13px] font-semibold transition',
+              'relative z-10 px-4 py-2 text-[13px] font-semibold transition-colors duration-200',
               i > 0 && 'border-l border-[#dfe3e8]',
-              kind === g.id ? 'bg-[#0b5cd5] text-white' : 'bg-white text-[#5a6b7b] hover:bg-[#f2fafd]',
+              kind === g.id ? 'text-white' : 'text-[#5a6b7b] hover:text-[#1a1a1a]',
             )}
           >
             {g.label}
@@ -42,21 +63,25 @@ export default function SelectVehicle() {
         ))}
       </div>
 
-      {/* layouts for the selected kind */}
-      <div className="mt-5 flex flex-wrap gap-3">
-        {group.options.map((option) => (
+      {/* layouts for the selected kind — re-keyed so tiles re-animate on change */}
+      <div key={kind} className="mt-5 flex flex-wrap gap-3">
+        {group.options.map((option, i) => (
           <button
             key={option.id}
             type="button"
             aria-pressed={selected === option.id}
             onClick={() => setSelected(option.id)}
+            style={{
+              borderColor: selected === option.id ? SELECTED : ACCENT,
+              animationDelay: `${i * 45}ms`,
+            }}
             className={clsx(
-              'grid h-[88px] w-[92px] place-items-center rounded-xl border-2 bg-white transition',
+              'grid h-[88px] w-[92px] animate-tile-in place-items-center rounded-xl border-2 bg-white',
+              'transition-[background-color,box-shadow] duration-150',
               selected === option.id
                 ? 'bg-[#eef6fb] ring-2 ring-[#0b5cd5]/20'
                 : 'hover:bg-[#f2fafd]',
             )}
-            style={{ borderColor: selected === option.id ? SELECTED : ACCENT }}
           >
             <TrailerGlyph front={option.front} axleGroups={option.axleGroups} />
           </button>
