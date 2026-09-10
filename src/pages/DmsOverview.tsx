@@ -65,27 +65,35 @@ export default function DmsOverview() {
 
       {/* Body */}
       <div className="min-h-0 flex-1 px-5 py-3">
-        <h2 className="text-[18px] font-bold">Diagnostic Memory</h2>
-        <div className="mt-1.5 flex items-center gap-8 text-[16px]">
-          <DtcCounter count={dms.memory.active} color={DTC_RED} label="Active DTC" />
-          <DtcCounter count={dms.memory.inactive} color={DTC_BLUE} label="Inactive DTC" />
-        </div>
-
-        <div className="mt-3 border-b border-[#d9dce1]" />
-
-        <h2 className="mt-3 text-[18px] font-bold">ECU Data</h2>
-        <div
-          className="mt-2 grid gap-x-6 gap-y-2 border-b border-dashed border-[#c9c9c9] pb-2"
-          style={{ gridTemplateColumns: `repeat(${dms.ecuData.length}, minmax(0, 1fr))` }}
-        >
-          {dms.ecuData.map((f) => (
-            <div key={f.label}>
-              <div className="text-[13px] text-[#6b7280]">{f.label}</div>
-              <div className="text-[16px]">{f.value ?? ' '}</div>
+        {tab === 'OVERVIEW' ? (
+          <>
+            <h2 className="text-[18px] font-bold">Diagnostic Memory</h2>
+            <div className="mt-1.5 flex items-center gap-8 text-[16px]">
+              <DtcCounter count={dms.memory.active} color={DTC_RED} label="Active DTC" />
+              <DtcCounter count={dms.memory.inactive} color={DTC_BLUE} label="Inactive DTC" />
             </div>
-          ))}
-        </div>
-        <div className="border-b border-dashed border-[#c9c9c9]" />
+
+            <div className="mt-3 border-b border-[#d9dce1]" />
+
+            <h2 className="mt-3 text-[18px] font-bold">ECU Data</h2>
+            <div
+              className="mt-2 grid gap-x-6 gap-y-2 border-b border-dashed border-[#c9c9c9] pb-2"
+              style={{ gridTemplateColumns: `repeat(${dms.ecuData.length}, minmax(0, 1fr))` }}
+            >
+              {dms.ecuData.map((f) => (
+                <div key={f.label}>
+                  <div className="text-[13px] text-[#6b7280]">{f.label}</div>
+                  <div className="text-[16px]">{f.value ?? ' '}</div>
+                </div>
+              ))}
+            </div>
+            <div className="border-b border-dashed border-[#c9c9c9]" />
+          </>
+        ) : tab === 'SYSTEM' ? (
+          <div className="h-full" data-tab="system">
+            {/* SYSTEM page — content to be specified */}
+          </div>
+        ) : null}
       </div>
     </div>
   )
