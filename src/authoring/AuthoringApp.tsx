@@ -1,5 +1,6 @@
 import { Menu } from 'lucide-react'
 import zfLogo from '../assets/ZF_logo_STD_Blue_3CC.svg'
+import SelectVehicle from './steps/SelectVehicle'
 
 /**
  * Web-based parameter Authoring Tool (Option D). Separate page from the field
@@ -42,8 +43,10 @@ export default function AuthoringApp() {
         </span>
       </header>
 
-      {/* Authoring canvas — to be modelled */}
-      <main className="min-h-0 flex-1 overflow-hidden" data-area="authoring-canvas" />
+      {/* Authoring canvas */}
+      <main className="flex min-h-0 flex-1 flex-col" data-area="authoring-canvas">
+        <SelectVehicle />
+      </main>
     </div>
   )
 }
