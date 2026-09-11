@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Authoring tool layout — shell options</title>
+<style>
+  :root{
+    --zf-blue:#0b5cd5; --zf-blue-d:#083f93; --accent:#1f9ed6; --ink:#16202b; --muted:#5a6b7b;
+    --line:#dfe3e8; --bg:#eef1f4; --panel:#fff; --wash:#eef6fb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:1080px;margin:0 auto;padding:38px 20px 90px}
+  h1{font-size:24px;margin:0 0 4px}
+  .sub{color:var(--muted);margin:0 0 20px;max-width:78ch;font-size:14px}
+
+  section.opt{background:var(--panel);border:1px solid var(--line);border-radius:16px;
+    padding:20px 22px 24px;margin-top:20px}
+  section.opt h2{font-size:17px;margin:0 0 3px}
+  section.opt .why{color:var(--muted);font-size:13.5px;margin:0 0 16px;max-width:80ch}
+  .tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--zf-blue-d);background:#e7f0ff;border-radius:999px;padding:2px 8px;margin-left:8px;vertical-align:2px}
+
+  .frame{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#f7f8fa;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.02)}
+  .mock{width:100%;height:420px;display:flex;background:#fff;font-size:11px;position:relative}
+  .mock *{box-sizing:border-box}
+  .m-tile{border-radius:8px;border:1.5px solid var(--accent);background:#fff;display:grid;place-items:center;
+    color:var(--accent);font-weight:700}
+  .m-tile.on{border-color:var(--zf-blue);background:var(--zf-blue);color:#fff}
+  .m-label{font-size:9.5px;color:var(--muted);text-align:center;margin-top:4px}
+  .m-h{font-weight:700;color:var(--ink)}
+
+  /* ---- Option 1: left rail wizard ---- */
+  .l1-rail{width:150px;flex:none;background:#0d1f38;color:#cfe0ff;display:flex;flex-direction:column;padding:14px 10px}
+  .l1-brand{color:#fff;font-weight:800;font-size:12px;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+  .l1-step{display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:7px;margin-bottom:2px}
+  .l1-step.on{background:#16345f;color:#fff}
+  .l1-dot{width:16px;height:16px;border-radius:99px;background:#264a7c;flex:none;display:grid;place-items:center;font-size:8px}
+  .l1-step.on .l1-dot{background:var(--accent)}
+  .l1-step.done .l1-dot{background:#2fa45a}
+  .l1-main{flex:1;padding:18px 20px;overflow:auto}
+  .l1-seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:8px 0 12px}
+  .l1-seg span{padding:5px 10px;font-size:10px;color:var(--muted)}
+  .l1-seg span.on{background:var(--zf-blue);color:#fff}
+  .l1-grid{display:flex;gap:8px;flex-wrap:wrap}
+  .l1-grid .m-tile{width:52px;height:52px}
+
+  /* ---- Option 2: card dashboard ---- */
+  .l2-wrap{flex:1;display:flex;flex-direction:column;background:#eef1f4}
+  .l2-top{height:40px;background:var(--zf-blue);color:#fff;display:flex;align-items:center;padding:0 16px;font-weight:700;font-size:11px;gap:8px}
+  .l2-body{flex:1;padding:18px;overflow:auto;display:flex;flex-direction:column;gap:14px}
+  .l2-card{background:#fff;border-radius:12px;box-shadow:0 4px 14px rgba(16,32,50,.08);padding:16px}
+  .l2-chiprow{display:flex;gap:6px;margin-bottom:10px}
+  .l2-chip{font-size:9.5px;font-weight:700;padding:4px 9px;border-radius:999px;background:#eef1f5;color:var(--muted)}
+  .l2-chip.on{background:var(--zf-blue);color:#fff}
+  .l2-grid{display:flex;gap:8px;flex-wrap:wrap}
+  .l2-grid .m-tile{width:50px;height:50px}
+
+  /* ---- Option 3: split summary pane ---- */
+  .l3-wrap{flex:1;display:flex}
+  .l3-top{position:absolute;top:0;left:0;right:0;height:36px;background:var(--zf-blue);color:#fff;
+    display:flex;align-items:center;padding:0 16px;font-weight:700;font-size:11px}
+  .l3-main{flex:1;padding-top:52px;padding-left:18px;padding-right:14px;overflow:auto}
+  .l3-side{width:150px;flex:none;background:#f7f9fb;border-left:1px solid var(--line);padding-top:52px;
+    padding:52px 12px 12px;display:flex;flex-direction:column;gap:10px}
+  .l3-side h4{font-size:10px;margin:0;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+  .l3-sel{font-size:10.5px;background:#fff;border:1px solid var(--line);border-radius:7px;padding:6px 8px}
+  .l3-cta{margin-top:auto;background:var(--zf-blue);color:#fff;text-align:center;border-radius:8px;padding:8px;font-size:11px;font-weight:700}
+  .l3-grid{display:flex;gap:8px;flex-wrap:wrap}
+  .l3-grid .m-tile{width:52px;height:52px}
+
+  /* ---- Option 4: minimal top progress, full-bleed ---- */
+  .l4-wrap{flex:1;display:flex;flex-direction:column}
+  .l4-bar{height:4px;background:#e6e9ee}
+  .l4-bar-fill{height:100%;width:38%;background:var(--zf-blue)}
+  .l4-top{height:34px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-size:10.5px;color:var(--muted)}
+  .l4-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px}
+  .l4-title{font-size:20px;font-weight:800;color:var(--ink)}
+  .l4-grid{display:flex;gap:10px}
+  .l4-grid .m-tile{width:58px;height:58px}
+
+  .foot{margin-top:34px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+  .foot b{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Authoring tool layout — shell options</h1>
+  <p class="sub">Four different structures for the page around the steps (not the
+  tiles themselves, which are already set). All keep the ZF blue / cyan palette and
+  the same step content — only the navigation/chrome pattern changes.</p>
+
+  <section class="opt">
+    <h2>1 · Left rail wizard</h2>
+    <p class="why">A persistent dark sidebar lists every step with a status dot (done
+    / current / upcoming); the group picker becomes a small segmented control inside
+    the main panel. Reads as a proper multi-step tool, not a marketing page — the
+    step list is always visible, so users always know where they are and can jump
+    back. Common in setup wizards (Stripe onboarding, Linear).</p>
+    <div class="frame"><div class="mock">
+      <div class="l1-rail">
+        <div class="l1-brand">⚡ iABS Authoring</div>
+        <div class="l1-step done"><span class="l1-dot">✓</span>Select vehicle</div>
+        <div class="l1-step on"><span class="l1-dot"></span>Select Functions</div>
+        <div class="l1-step"><span class="l1-dot"></span>ABS layout</div>
+        <div class="l1-step"><span class="l1-dot"></span>Parameters</div>
+        <div class="l1-step"><span class="l1-dot"></span>Publish</div>
+      </div>
+      <div class="l1-main">
+        <div class="m-h">Select Functions</div>
+        <div class="l1-seg"><span class="on">Essential</span><span>Extended</span><span>Data &amp; Subsystem</span></div>
+        <div class="l1-grid">
+          <div><div class="m-tile on">⚡</div><div class="m-label">Multi-Voltage</div></div>
+          <div><div class="m-tile">◎</div><div class="m-label">ABS</div></div>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="opt">
+    <h2>2 · Card dashboard</h2>
+    <p class="why">Slim top bar; each step's content sits in its own elevated white
+    card with a soft shadow and rounded corners, floating on a light grey page — the
+    "modern SaaS dashboard" look instead of a flat full-bleed white sheet. The group
+    picker becomes chips at the top of the card.</p>
+    <div class="frame"><div class="mock">
+      <div class="l2-wrap">
+        <div class="l2-top">[pro] Diagnostics Suite &nbsp;·&nbsp; Authoring</div>
+        <div class="l2-body">
+          <div class="l2-card">
+            <div class="m-h" style="margin-bottom:8px">Select vehicle</div>
+            <div class="l2-chiprow"><span class="l2-chip on">Drawbar</span><span class="l2-chip">Semitrailers</span><span class="l2-chip">Central axle</span></div>
+            <div class="l2-grid">
+              <div class="m-tile on">🚚</div><div class="m-tile">🚚</div><div class="m-tile">🚚</div>
+            </div>
+          </div>
+          <div class="l2-card">
+            <div class="m-h" style="margin-bottom:8px">Select Functions</div>
+            <div class="l2-chiprow"><span class="l2-chip on">Essential</span><span class="l2-chip">Extended</span><span class="l2-chip">Data &amp; Subsystem</span></div>
+            <div class="l2-grid"><div class="m-tile">⚡</div></div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="opt">
+    <h2>3 · Split summary pane</h2>
+    <p class="why">A persistent right-hand panel shows a running summary of every
+    choice made so far (vehicle + functions), with the publish/continue action pinned
+    to its bottom — the user always sees the whole configuration taking shape, not
+    just the current step. Common in checkout/configurator flows (car builders,
+    e-commerce).</p>
+    <div class="frame"><div class="mock">
+      <div class="l3-wrap" style="position:relative;width:100%">
+        <div class="l3-top">[pro] Diagnostics Suite &nbsp;·&nbsp; Authoring</div>
+        <div class="l3-main">
+          <div class="m-h">Select Functions — Essential</div>
+          <div class="l3-grid" style="margin-top:8px"><div class="m-tile on">⚡</div><div class="m-tile">◎</div></div>
+        </div>
+        <div class="l3-side">
+          <h4>Configuration</h4>
+          <div class="l3-sel"><b>Vehicle</b><br>Drawbar · 1+2 axle</div>
+          <div class="l3-sel"><b>Functions</b><br>Advanced Multi-Voltage</div>
+          <div class="l3-cta">Continue →</div>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="opt">
+    <h2>4 · Minimal top progress, full-bleed step</h2>
+    <p class="why">Almost no chrome: a 4px progress line, a tiny step counter, then
+    one large centered step filling the screen — more "consumer app" than "enterprise
+    tool." Best if steps are simple and few; a poor fit once functions/parameters get
+    dense, since it wastes width.</p>
+    <div class="frame"><div class="mock">
+      <div class="l4-wrap">
+        <div class="l4-bar"><div class="l4-bar-fill"></div></div>
+        <div class="l4-top"><span>iABS Authoring</span><span>Step 2 of 5</span></div>
+        <div class="l4-body">
+          <div class="l4-title">Select Functions</div>
+          <div class="l4-grid"><div class="m-tile on">⚡</div><div class="m-tile">◎</div><div class="m-tile">📡</div></div>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <div class="foot">
+    <b>Recommendation:</b> <b>1 (left rail wizard)</b> for an authoring tool used by
+    engineers who need to jump between steps and see progress at a glance; <b>3 (split
+    summary pane)</b> if you want the "configuration so far" always visible, which
+    matters once there are many steps/parameters. <b>2</b> is the safest incremental
+    upgrade over what exists today. <b>4</b> is the weakest fit for a dense authoring
+    tool. Tell me which and I'll restructure <code>AuthoringApp.tsx</code> around it.
+  </div>
+</div>
+</body>
+</html>
