@@ -66,7 +66,7 @@ export default function FeatureTile({
       ) : (
         tile
       )}
-      <span className="max-w-[110px] text-center text-[12px] font-semibold text-[#1a1a1a]">
+      <span className="max-w-[150px] truncate text-[11.5px] font-semibold tracking-[-0.01em] text-[#34424e]">
         {label}
       </span>
     </div>
