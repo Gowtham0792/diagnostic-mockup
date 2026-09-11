@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tile caption styles — proposals</title>
+<style>
+  :root{
+    --zf-blue:#0b5cd5; --accent:#1f9ed6; --ink:#16202b; --muted:#5a6b7b;
+    --line:#dfe3e8; --bg:#eef1f4; --panel:#fff; --wash:#eef6fb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:1040px;margin:0 auto;padding:38px 20px 90px}
+  h1{font-size:24px;margin:0 0 4px}
+  .sub{color:var(--muted);margin:0 0 20px;max-width:76ch;font-size:14px}
+
+  section.opt{background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:20px 22px 24px;margin-top:18px}
+  section.opt h2{font-size:16px;margin:0 0 3px}
+  section.opt .why{color:var(--muted);font-size:13px;margin:0 0 16px;max-width:78ch}
+  .tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    color:#083f93;background:#e7f0ff;border-radius:999px;padding:2px 8px;margin-left:8px;vertical-align:2px}
+
+  .row{display:flex;flex-wrap:wrap;gap:20px}
+  .card{display:flex;flex-direction:column;align-items:center;gap:8px;width:110px}
+  .tile{width:88px;height:88px;border-radius:12px;border:2px solid var(--accent);
+    display:grid;place-items:center;background:#fff}
+  .tile.on{border-color:var(--zf-blue);background:var(--zf-blue)}
+  .tile svg{width:56px;height:44px}
+
+  /* ---- A baseline ---- */
+  .cap-a{font-size:12px;font-weight:600;color:var(--ink);text-align:center}
+
+  /* ---- B eyebrow uppercase ---- */
+  .cap-b{display:flex;flex-direction:column;align-items:center;gap:2px}
+  .cap-b .dot{width:5px;height:5px;border-radius:99px;background:var(--zf-blue)}
+  .cap-b .t{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--muted);text-align:center}
+
+  /* ---- C two-line with subtitle ---- */
+  .cap-c{display:flex;flex-direction:column;align-items:center;gap:1px}
+  .cap-c .name{font-size:12.5px;font-weight:700;color:var(--ink);text-align:center}
+  .cap-c .sub{font-size:10.5px;font-weight:500;color:var(--muted);text-align:center}
+
+  /* ---- D pill/chip ---- */
+  .cap-d{font-size:11.5px;font-weight:700;color:var(--zf-blue);background:var(--wash);
+    border-radius:999px;padding:3px 10px}
+
+  /* ---- E underline accent ---- */
+  .cap-e{font-size:12px;font-weight:700;color:var(--ink);text-align:center;position:relative;
+    padding-bottom:5px;cursor:default}
+  .cap-e::after{content:"";position:absolute;left:50%;bottom:0;height:2px;width:0;
+    background:var(--zf-blue);transition:width .22s ease,left .22s ease;border-radius:2px}
+  .card:hover .cap-e::after{width:100%;left:0}
+  .card.selected .cap-e{color:var(--zf-blue)}
+  .card.selected .cap-e::after{width:100%;left:0}
+
+  /* ---- F numbered tag ---- */
+  .cap-f{display:flex;align-items:center;gap:6px}
+  .cap-f .idx{display:grid;place-items:center;width:16px;height:16px;border-radius:5px;
+    background:var(--zf-blue);color:#fff;font:700 9px ui-monospace,Consolas,monospace;flex:none}
+  .cap-f .t{font-size:12px;font-weight:600;color:var(--ink)}
+
+  .foot{margin-top:34px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+  .foot b{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Tile caption styles — proposals</h1>
+  <p class="sub">The plain bold-text caption under each tile reads flat next to the
+  colored glyphs above it. Six alternatives, using the same sample tiles (two
+  trailer layouts + Advanced Multi-Voltage, one shown selected) so you can compare
+  directly against real content.</p>
+
+  <section class="opt">
+    <h2>A · Baseline <span class="tag">current</span></h2>
+    <p class="why">Plain bold 12px ink text, centered. Flat next to the colored art.</p>
+    <div class="row" id="a"></div>
+  </section>
+
+  <section class="opt">
+    <h2>B · Eyebrow, uppercase</h2>
+    <p class="why">Small tracked-out uppercase label with a tiny ZF-blue dot above it —
+    reads like a spec-sheet tag rather than a button caption.</p>
+    <div class="row" id="b"></div>
+  </section>
+
+  <section class="opt">
+    <h2>C · Two-line with subtitle</h2>
+    <p class="why">Bold name plus a smaller muted second line (its group/category).
+    Adds information without extra chrome; degrades gracefully to one line if there's
+    no subtitle.</p>
+    <div class="row" id="c"></div>
+  </section>
+
+  <section class="opt">
+    <h2>D · Pill / chip</h2>
+    <p class="why">Caption sits inside a soft light-blue rounded chip instead of bare
+    text — visually pairs the label back to the tile's accent color.</p>
+    <div class="row" id="d"></div>
+  </section>
+
+  <section class="opt">
+    <h2>E · Underline accent <span class="tag">interactive</span></h2>
+    <p class="why">Bold text, no visible rule at rest; a ZF-blue underline draws in on
+    hover, and stays filled + text turns blue when that tile is selected — the caption
+    itself reflects state. Hover the cards below.</p>
+    <div class="row" id="e"></div>
+  </section>
+
+  <section class="opt">
+    <h2>F · Numbered tag</h2>
+    <p class="why">A tiny monospace index chip before the label — useful if these tiles
+    ever need a stable reference number (e.g. for a parameter sheet or support call).</p>
+    <div class="row" id="f"></div>
+  </section>
+
+  <div class="foot">
+    <b>Recommendation:</b> <b>E</b> for the trailer/function tiles that are actually
+    clickable (the caption then echoes selection, not just the tile) — fall back to
+    <b>B</b> anywhere a caption is purely descriptive, non-interactive.
+  </div>
+</div>
+
+<script>
+  // reuse the same glyph construction as the app's trailer + voltage icons
+  const groupXs = (c,n) => { const sp=n>=3?8:9; return Array.from({length:n},(_,i)=>c-((n-1)*sp)/2+i*sp); };
+  const axleXs = (g,f) => {
+    if (g.length===1) return groupXs(f==='gooseneck'?58:46,g[0]);
+    const lo=f==='drawbar'?30:34,hi=70;
+    return g.flatMap((c,i)=>groupXs(lo+((hi-lo)*i)/(g.length-1),c));
+  };
+  function trailerGlyph(front, groups, color){
+    const c = color;
+    let fr='';
+    if(front==='drawbar') fr=`<path d="M14 44 L7 44 L3 50" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="3" cy="50" r="1.8" fill="${c}"/>`;
+    if(front==='gooseneck') fr=`<path d="M14 26 C7 26 8 42 3 45" stroke="${c}" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="3" cy="49" r="2.6" stroke="${c}" stroke-width="2" fill="none"/>`;
+    const wheelFill = color === '#ffffff' ? '#0b5cd5' : '#fff';
+    const wh = axleXs(groups,front).map(x=>`<circle cx="${x}" cy="53" r="4.5" fill="${wheelFill}" stroke="${c}" stroke-width="2"/>`).join('');
+    return `<svg viewBox="0 0 96 62" fill="none" aria-hidden="true"><rect x="14" y="24" width="68" height="26" rx="4" stroke="${c}" stroke-width="2"/>${fr}${wh}</svg>`;
+  }
+  function voltageGlyph(selected){
+    const t = selected ? '#fff' : '#0b5cd5', b = selected ? '#fff' : '#1f9ed6';
+    return `<svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <text x="32" y="19" text-anchor="middle" font-size="13.5" font-weight="800" fill="${t}" font-family="-apple-system,Segoe UI,Roboto,sans-serif">8 &ndash; 32 V</text>
+      <path d="M38 24 L20 47 L28 47 L24 61 L46 34 L36 34 Z" fill="${b}"/>
+    </svg>`;
+  }
+
+  // sample set: [kind, isSelected]
+  const SAMPLES = [
+    { kind:'drawbar1', label:'Drawbar trailer', sub:'Vehicle', selected:false },
+    { kind:'semi', label:'Semitrailers', sub:'Vehicle', selected:false },
+    { kind:'voltage', label:'Advanced Multi-Voltage', sub:'Essential Function', selected:true },
+  ];
+
+  function tileSVG(kind, selected){
+    if (kind === 'drawbar1') return trailerGlyph('drawbar', [1,2], selected ? '#fff' : '#1f9ed6');
+    if (kind === 'semi') return trailerGlyph('gooseneck', [2], selected ? '#fff' : '#1f9ed6');
+    return voltageGlyph(selected);
+  }
+
+  function build(hostId, renderCaption){
+    const host = document.getElementById(hostId);
+    SAMPLES.forEach(s => {
+      const card = document.createElement('div');
+      card.className = 'card' + (s.selected ? ' selected' : '');
+      const tile = document.createElement('div');
+      tile.className = 'tile' + (s.selected ? ' on' : '');
+      tile.innerHTML = tileSVG(s.kind, s.selected);
+      card.appendChild(tile);
+      card.appendChild(renderCaption(s));
+      host.appendChild(card);
+    });
+  }
+
+  build('a', s => { const d=document.createElement('div'); d.className='cap-a'; d.textContent=s.label; return d; });
+
+  build('b', s => {
+    const wrap = document.createElement('div'); wrap.className='cap-b';
+    wrap.innerHTML = `<span class="dot"></span><span class="t">${s.label}</span>`;
+    return wrap;
+  });
+
+  build('c', s => {
+    const wrap = document.createElement('div'); wrap.className='cap-c';
+    wrap.innerHTML = `<span class="name">${s.label}</span><span class="sub">${s.sub}</span>`;
+    return wrap;
+  });
+
+  build('d', s => { const d=document.createElement('div'); d.className='cap-d'; d.textContent=s.label; return d; });
+
+  build('e', s => { const d=document.createElement('div'); d.className='cap-e'; d.textContent=s.label; return d; });
+
+  build('f', s => {
+    const wrap = document.createElement('div'); wrap.className='cap-f';
+    const idx = SAMPLES.indexOf(s) + 1;
+    wrap.innerHTML = `<span class="idx">${String(idx).padStart(2,'0')}</span><span class="t">${s.label}</span>`;
+    return wrap;
+  });
+</script>
+</body>
+</html>
