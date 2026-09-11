@@ -32,30 +32,35 @@ export default function SegmentedTabs({
   }, [activeIndex])
 
   return (
-    <div className="relative inline-flex overflow-hidden rounded-[10px] border-[1.5px] border-[#dfe3e8]">
-      <span
-        aria-hidden
-        className="absolute inset-y-0 rounded-[8px] bg-[#0b5cd5] transition-[left,width] duration-300 ease-[cubic-bezier(0.2,0.7,0.3,1)]"
-        style={{ left: pill.left, width: pill.width }}
-      />
-      {options.map((o, i) => (
-        <button
-          key={o.id}
-          ref={(el) => {
-            btnRefs.current[i] = el
-          }}
-          type="button"
-          aria-pressed={active === o.id}
-          onClick={() => onChange(o.id)}
-          className={clsx(
-            'relative z-10 px-4 py-2 text-[13px] font-semibold transition-colors duration-200',
-            i > 0 && 'border-l border-[#dfe3e8]',
-            active === o.id ? 'text-white' : 'text-[#5a6b7b] hover:text-[#1a1a1a]',
-          )}
-        >
-          {o.label}
-        </button>
-      ))}
+    // the pill itself never wraps (its sliding highlight assumes one row), so on
+    // narrow screens it scrolls horizontally *within its own box* instead of
+    // forcing the whole page to scroll sideways
+    <div className="max-w-full overflow-x-auto">
+      <div className="relative inline-flex overflow-hidden rounded-[10px] border-[1.5px] border-[#dfe3e8]">
+        <span
+          aria-hidden
+          className="absolute inset-y-0 rounded-[8px] bg-[#0b5cd5] transition-[left,width] duration-300 ease-[cubic-bezier(0.2,0.7,0.3,1)]"
+          style={{ left: pill.left, width: pill.width }}
+        />
+        {options.map((o, i) => (
+          <button
+            key={o.id}
+            ref={(el) => {
+              btnRefs.current[i] = el
+            }}
+            type="button"
+            aria-pressed={active === o.id}
+            onClick={() => onChange(o.id)}
+            className={clsx(
+              'relative z-10 shrink-0 whitespace-nowrap px-3 py-2 text-[12.5px] font-semibold transition-colors duration-200 sm:px-4 sm:text-[13px]',
+              i > 0 && 'border-l border-[#dfe3e8]',
+              active === o.id ? 'text-white' : 'text-[#5a6b7b] hover:text-[#1a1a1a]',
+            )}
+          >
+            {o.label}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }

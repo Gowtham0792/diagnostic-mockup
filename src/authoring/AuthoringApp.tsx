@@ -18,27 +18,27 @@ const AVATAR_ORANGE = '#e8730c'
 
 export default function AuthoringApp() {
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-white font-sans text-[#1a1a1a]">
+    <div className="flex h-dvh w-full flex-col overflow-hidden bg-white font-sans text-[#1a1a1a]">
       <header
-        className="flex h-14 shrink-0 items-center gap-3 px-5 text-white shadow-sm"
+        className="flex h-12 shrink-0 items-center gap-1.5 px-3 text-white shadow-sm sm:h-14 sm:gap-3 sm:px-5"
         style={{ background: ZF_BLUE }}
       >
-        <button aria-label="Menu" className="grid place-items-center rounded p-1 hover:bg-white/10">
-          <Menu className="h-6 w-6" />
+        <button aria-label="Menu" className="grid shrink-0 place-items-center rounded p-1 hover:bg-white/10">
+          <Menu className="h-5 w-5 sm:h-6 sm:w-6" />
         </button>
 
-        <span className="ml-1 grid h-9 w-9 place-items-center rounded-full bg-white p-[3px]">
+        <span className="ml-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-white p-[3px] sm:ml-1 sm:h-9 sm:w-9">
           <img src={zfLogo} alt="ZF" className="h-full w-full" />
         </span>
 
-        <span className="text-[17px] tracking-wide">
+        <span className="truncate text-[13px] tracking-wide sm:text-[17px]">
           <span className="font-bold">[pro]</span>Diagnostics Suite
         </span>
 
-        <ConnectedCloud />
+        <ConnectedCloud className="hidden shrink-0 sm:ml-2 sm:block" />
 
         <span
-          className="ml-auto grid h-9 w-9 place-items-center rounded-full text-[13px] font-bold text-white"
+          className="ml-auto grid h-7 w-7 shrink-0 place-items-center rounded-full text-[11px] font-bold text-white sm:h-9 sm:w-9 sm:text-[13px]"
           style={{ background: AVATAR_ORANGE }}
           title="Signed in"
         >
@@ -49,7 +49,7 @@ export default function AuthoringApp() {
       <Stepper steps={authoringSteps} currentIndex={0} />
 
       {/* Authoring canvas — one continuous scroll, both steps stacked */}
-      <main className="flex min-h-0 flex-1 flex-col overflow-auto" data-area="authoring-canvas">
+      <main className="flex min-h-0 flex-1 flex-col overflow-y-auto overflow-x-hidden" data-area="authoring-canvas">
         <SelectVehicle />
         <div className="border-t border-[#e5e8ec]" />
         <SelectFunctions />
@@ -58,10 +58,10 @@ export default function AuthoringApp() {
   )
 }
 
-function ConnectedCloud() {
+function ConnectedCloud({ className }: { className?: string }) {
   return (
     <svg
-      className="ml-2"
+      className={className}
       width="36"
       height="28"
       viewBox="0 0 36 28"

@@ -17,7 +17,7 @@ export default function Stepper({
   return (
     <nav
       aria-label="Progress"
-      className="flex shrink-0 flex-col items-center gap-1.5 border-b border-[#e5e8ec] bg-white px-6 py-2.5"
+      className="flex shrink-0 flex-col items-center gap-1.5 border-b border-[#e5e8ec] bg-white px-3 py-2 sm:px-6 sm:py-2.5"
     >
       <div className="flex items-baseline gap-2">
         <span className="text-[13px] font-bold text-[#0b5cd5]">{steps[currentIndex]?.label}</span>

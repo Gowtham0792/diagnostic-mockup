@@ -24,8 +24,8 @@ export default function SelectVehicle() {
   const group = vehicleGroups.find((g) => g.id === kind) ?? vehicleGroups[0]
 
   return (
-    <div className="p-6">
-      <h1 className="text-[19px] font-bold tracking-tight">
+    <div className="p-4 sm:p-6">
+      <h1 className="text-[17px] font-bold tracking-tight sm:text-[19px]">
         <span className="text-[#0b5cd5]">Step 1</span>
         <span className="px-2 font-normal text-[#c1c7cf]">/</span>
         <span className="text-[#1a1a1a]">Select vehicle</span>
@@ -41,7 +41,7 @@ export default function SelectVehicle() {
       </div>
 
       {/* layouts for the selected kind — re-keyed so tiles re-animate on change */}
-      <div key={kind} className="mt-5 flex flex-wrap gap-3.5 pt-1">
+      <div key={kind} className="mt-5 flex flex-wrap gap-2.5 pt-1 sm:gap-3.5">
         {group.options.map((option, i) => {
           const isSel = selected === option.id
           return (
@@ -52,7 +52,7 @@ export default function SelectVehicle() {
               onClick={() => setSelected(option.id)}
               style={{ animationDelay: `${i * 45}ms` }}
               className={clsx(
-                'relative grid h-[88px] w-[92px] animate-tile-in place-items-center rounded-xl border-2',
+                'relative grid h-[76px] w-[80px] animate-tile-in place-items-center rounded-xl border-2 sm:h-[88px] sm:w-[92px]',
                 'transition-[transform,background-color,border-color,box-shadow] duration-150',
                 isSel
                   ? 'scale-[1.04] border-[#0b5cd5] bg-[#0b5cd5] shadow-lg shadow-[#0b5cd5]/25'

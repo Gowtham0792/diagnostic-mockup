@@ -27,8 +27,8 @@ export default function SelectFunctions() {
     })
 
   return (
-    <div className="p-6">
-      <h1 className="text-[19px] font-bold tracking-tight">
+    <div className="p-4 sm:p-6">
+      <h1 className="text-[17px] font-bold tracking-tight sm:text-[19px]">
         <span className="text-[#0b5cd5]">Step 2</span>
         <span className="px-2 font-normal text-[#c1c7cf]">/</span>
         <span className="text-[#1a1a1a]">Select Functions</span>
@@ -42,7 +42,7 @@ export default function SelectFunctions() {
         />
       </div>
 
-      <div key={group} className="mt-5 flex flex-wrap gap-3.5 pt-1">
+      <div key={group} className="mt-5 flex flex-wrap gap-2.5 pt-1 sm:gap-3.5">
         {activeGroup.functionIds.length === 0 ? (
           <span className="text-[12px] text-[#8a94a0]">No functions here yet</span>
         ) : (
