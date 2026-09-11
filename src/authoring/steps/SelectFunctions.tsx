@@ -22,7 +22,7 @@ export default function SelectFunctions() {
     })
 
   return (
-    <div className="min-h-0 flex-1 overflow-auto p-6">
+    <div className="p-6">
       <h1 className="text-[19px] font-bold tracking-tight">
         <span className="text-[#0b5cd5]">Step 2</span>
         <span className="px-2 font-normal text-[#c1c7cf]">/</span>
