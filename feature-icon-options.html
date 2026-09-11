@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feature icons — harmonized proposals</title>
+<style>
+  :root{
+    --zf-blue:#0b5cd5; --zf-blue-d:#083f93; --cyan:#1f9ed6;
+    --ink:#16202b; --muted:#5a6b7b; --line:#dfe3e8; --bg:#eef1f4; --panel:#fff;
+    font-synthesis-weight:none;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:1120px;margin:0 auto;padding:38px 20px 90px}
+  h1{font-size:24px;margin:0 0 4px}
+  .sub{color:var(--muted);margin:0 0 8px;max-width:76ch}
+  .palette{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px}
+  .sw{display:flex;align-items:center;gap:7px;background:var(--panel);border:1px solid var(--line);
+    border-radius:8px;padding:5px 9px;font-size:12.5px}
+  .sw i{width:15px;height:15px;border-radius:4px;display:inline-block;border:1px solid rgba(0,0,0,.1)}
+
+  section.p{background:var(--panel);border:1px solid var(--line);border-radius:16px;
+    padding:20px 20px 24px;margin-top:22px}
+  section.p h2{font-size:18px;margin:0 0 3px}
+  section.p .why{color:var(--muted);font-size:13.5px;margin:0 0 16px;max-width:78ch}
+  .tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--zf-blue-d);background:#e7f0ff;border-radius:999px;padding:2px 8px;margin-left:8px;vertical-align:2px}
+
+  .icongrid{display:flex;flex-wrap:wrap;gap:18px 16px}
+  .icard{display:flex;flex-direction:column;align-items:center;gap:8px;width:104px}
+  .itile{position:relative;width:96px;height:96px;border-radius:16px;display:grid;place-items:center;
+    border:2px solid var(--cyan);background:#fff;transition:.14s}
+  .itile:hover{filter:brightness(0.98)}
+  .itile svg{width:56px;height:56px}
+  .icap{font-size:12px;font-weight:600;text-align:center;color:var(--ink);line-height:1.3}
+  .ibadge{position:absolute;top:-8px;right:-8px;width:20px;height:20px;border-radius:999px;display:grid;
+    place-items:center;font:italic 700 12px Georgia,serif;box-shadow:0 1px 3px rgba(0,0,0,.18)}
+
+  .foot{margin-top:40px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+  .foot b{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Feature icons — harmonized proposals</h1>
+  <p class="sub">Your reference set mixes several unrelated styles: navy vs. grey vs.
+  cyan tiles, different "i" badge colors, filled vs. outline glyphs, inconsistent
+  stroke weights. Below are the same 14 icons redrawn as simple monochrome line-art
+  — the same construction as the trailer glyphs already in the tool — in three
+  harmonized treatments. The disabled state (<b>Lift axle #2</b>, greyed in your
+  reference) is carried through consistently in each.</p>
+
+  <div class="palette">
+    <span class="sw"><i style="background:#0b5cd5"></i> ZF blue #0B5CD5</span>
+    <span class="sw"><i style="background:#1f9ed6"></i> line-art cyan #1F9ED6</span>
+    <span class="sw"><i style="background:#e8f4fb"></i> soft backplate #E8F4FB</span>
+    <span class="sw"><i style="background:#aab2bb"></i> disabled grey #AAB2BB</span>
+  </div>
+
+  <section class="p" id="P1">
+    <h2>P1 · Outline <span class="tag">matches current trailer tiles</span></h2>
+    <p class="why">White tile, 2px cyan border, cyan line-art — exactly the treatment
+    already used for "Select vehicle". Badge: white circle, blue ring, blue "i".</p>
+    <div class="icongrid" id="P1-grid"></div>
+  </section>
+
+  <section class="p" id="P2">
+    <h2>P2 · Solid fill <span class="tag">matches the selected-tile style (H2)</span></h2>
+    <p class="why">Solid ZF-blue tile, white line-art — the same look a tile gets when
+    selected elsewhere in the tool. Good if these icons represent an "enabled /
+    included" feature by default. Badge: white circle, blue "i", no ring needed.</p>
+    <div class="icongrid" id="P2-grid"></div>
+  </section>
+
+  <section class="p" id="P3">
+    <h2>P3 · Duotone backplate</h2>
+    <p class="why">White tile with a soft light-blue circular backplate behind a cyan
+    glyph — adds depth without inverting the whole tile. Badge: solid blue circle,
+    white "i". Closest to your reference's "colored icon on white" feel, but with one
+    consistent accent instead of several.</p>
+    <div class="icongrid" id="P3-grid"></div>
+  </section>
+
+  <div class="foot">
+    <b>Recommendation:</b> <b>P1</b> to stay visually identical to the rest of the
+    authoring tool. Reach for <b>P2</b> only where a tile's selected/enabled state
+    needs to read at a glance (e.g. Lift axle #1 already active). Tell me which to
+    apply and where.
+  </div>
+</div>
+
+<script>
+  const ICONS = [
+    { id:'abs',        label:'ABS' },
+    { id:'voltage',     label:'Advanced Multi-Voltage' },
+    { id:'servicemind', label:'ServiceMind' },
+    { id:'notebook',    label:'Notebook Memory' },
+    { id:'optitire',    label:'OptiTire™' },
+    { id:'telematics',  label:'Telematics' },
+    { id:'rtr',         label:'Return to Ride Valve (Conventional)' },
+    { id:'traction',    label:'Traction Help' },
+    { id:'lowering',    label:'Forced lowering of the lift axles' },
+    { id:'padwear',     label:'Brake Pad Wear Indicator' },
+    { id:'gio',         label:'GIO Power service' },
+    { id:'iss',         label:'ISS' },
+    { id:'lift1',       label:'Lift axle #1', tag:'#1' },
+    { id:'lift2',       label:'Lift axle #2', tag:'#2', inactive:true },
+  ];
+
+  const pt = (cx,cy,r,deg) => { const a=(deg-90)*Math.PI/180; return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; };
+  const ticks = (cx,cy,r1,r2,from,to,count,c) => Array.from({length:count},(_,i)=>{
+    const d = from + (to-from)*i/(count-1);
+    const [x1,y1]=pt(cx,cy,r1,d), [x2,y2]=pt(cx,cy,r2,d);
+    return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${c}" stroke-width="2.4" stroke-linecap="round"/>`;
+  }).join('');
+
+  function iconInner(id, c, tag){
+    const T = (x,y,size,text,weight) => `<text x="${x}" y="${y}" text-anchor="middle" font-size="${size}" font-weight="${weight||800}" fill="${c}" font-family="-apple-system,Segoe UI,Roboto,sans-serif">${text}</text>`;
+    switch(id){
+      case 'abs': return `
+        <path d="M16 24a12 12 0 000 16" stroke="${c}" fill="none" stroke-width="3" stroke-linecap="round"/>
+        <path d="M48 24a12 12 0 010 16" stroke="${c}" fill="none" stroke-width="3" stroke-linecap="round"/>
+        ${T(32,38,15,'ABS')}`;
+      case 'voltage': return `
+        ${T(32,18,11,'8–32 V')}
+        <path d="M35 24 L23 42 L30 42 L27 54 L44 34 L36 34 Z" fill="${c}"/>`;
+      case 'servicemind': return `
+        ${T(32,17,12,'10 000')}
+        <circle cx="22" cy="46" r="6" stroke="${c}" fill="none" stroke-width="3"/>
+        <path d="M27 41 L42 26" stroke="${c}" stroke-width="3" stroke-linecap="round"/>
+        <path d="M42 26 l4 -4 l4 4 l-4 4 z" fill="${c}"/>`;
+      case 'notebook': return `
+        <rect x="15" y="19" width="34" height="21" rx="2" stroke="${c}" fill="none" stroke-width="3"/>
+        <line x1="15" y1="27" x2="49" y2="27" stroke="${c}" stroke-width="2"/>
+        <path d="M9 44 h46 l-4 8 h-38 z" stroke="${c}" fill="none" stroke-width="3" stroke-linejoin="round"/>`;
+      case 'optitire': return `
+        <circle cx="32" cy="32" r="14" stroke="${c}" fill="none" stroke-width="3"/>
+        <circle cx="32" cy="32" r="5" stroke="${c}" fill="none" stroke-width="3"/>
+        ${ticks(32,32,16,20,0,315,8,c)}`;
+      case 'telematics': return `
+        <path d="M32 9 L47 15 V30 C47 44 40 50 32 55 C24 50 17 44 17 30 V15 Z" stroke="${c}" fill="none" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M24 37a11 11 0 0116 0" stroke="${c}" fill="none" stroke-width="3" stroke-linecap="round"/>
+        <path d="M28 41a6 6 0 018 0" stroke="${c}" fill="none" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="32" cy="45" r="2.3" fill="${c}"/>`;
+      case 'rtr': return `
+        <line x1="13" y1="32" x2="51" y2="32" stroke="${c}" stroke-width="3" stroke-linecap="round"/>
+        <path d="M32 9 v13" stroke="${c}" stroke-width="3" stroke-linecap="round"/>
+        <path d="M26 17 l6 6 6-6" stroke="${c}" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M32 55 v-13" stroke="${c}" stroke-width="3" stroke-linecap="round"/>
+        <path d="M26 47 l6-6 6 6" stroke="${c}" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
+      case 'traction': return `
+        <path d="M9 47 L38 47 L53 17" stroke="${c}" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="19" cy="40" r="4.3" fill="${c}"/>
+        <path d="M47 27 v-14" stroke="${c}" stroke-width="3" stroke-linecap="round"/>
+        <path d="M41 19 l6-6 6 6" stroke="${c}" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
+      case 'lowering': return `
+        <circle cx="32" cy="11" r="3.2" fill="${c}"/>
+        <path d="M32 19 v21" stroke="${c}" stroke-width="3" stroke-linecap="round"/>
+        <path d="M21 32 l11 11 11-11" stroke="${c}" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
+      case 'padwear': return `
+        <path d="M46 24a16 16 0 10-3.6 19.6" stroke="${c}" fill="none" stroke-width="3" stroke-linecap="round"/>
+        <path d="M46 24 l1 -6 l5.5 3z" fill="${c}"/>
+        <circle cx="32" cy="32" r="2.6" fill="${c}"/>`;
+      case 'gio': return `
+        ${T(32,24,13,'GIO')}
+        <path d="M35 30 L25 46 L31 46 L28 56 L44 38 L36 38 Z" fill="${c}"/>`;
+      case 'iss': return `
+        <path d="M14 43 A18 18 0 0150 43" stroke="${c}" fill="none" stroke-width="3" stroke-linecap="round"/>
+        ${ticks(32,43,14,17,0,180,5,c)}
+        <line x1="32" y1="43" x2="41" y2="30" stroke="${c}" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="32" cy="43" r="3" fill="${c}"/>`;
+      case 'lift1': case 'lift2': return `
+        ${T(32,22,13,tag)}
+        <circle cx="32" cy="41" r="11" stroke="${c}" fill="none" stroke-width="3"/>
+        <path d="M32 46 v-11" stroke="${c}" stroke-width="3" stroke-linecap="round"/>
+        <path d="M27 40 l5-5 5 5" stroke="${c}" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
+      default: return '';
+    }
+  }
+
+  function render(hostId, theme){
+    const host = document.getElementById(hostId);
+    ICONS.forEach(icon => {
+      const active = !icon.inactive;
+      const t = active ? theme.on : theme.off;
+      const card = document.createElement('div'); card.className = 'icard';
+      const tile = document.createElement('div'); tile.className = 'itile';
+      tile.style.background = t.tileBg; tile.style.borderColor = t.tileBorder;
+
+      let backplate = '';
+      if (theme.backplate) backplate = `<circle cx="32" cy="32" r="27" fill="${active ? theme.backplate.on : theme.backplate.off}"/>`;
+
+      tile.innerHTML = `<svg viewBox="0 0 64 64">${backplate}${iconInner(icon.id, t.stroke, icon.tag)}</svg>
+        <span class="ibadge" style="background:${t.badgeBg};color:${t.badgeText};${t.badgeRing?`box-shadow:inset 0 0 0 1.5px ${t.badgeRing}`:''}">i</span>`;
+
+      const cap = document.createElement('span'); cap.className = 'icap'; cap.textContent = icon.label;
+      card.appendChild(tile); card.appendChild(cap);
+      host.appendChild(card);
+    });
+  }
+
+  render('P1-grid', {
+    on:  { tileBg:'#fff', tileBorder:'#1f9ed6', stroke:'#1f9ed6', badgeBg:'#fff', badgeText:'#0b5cd5', badgeRing:'#0b5cd5' },
+    off: { tileBg:'#fff', tileBorder:'#c9ced6', stroke:'#aab2bb', badgeBg:'#fff', badgeText:'#9aa3ad', badgeRing:'#c9ced6' },
+  });
+
+  render('P2-grid', {
+    on:  { tileBg:'#0b5cd5', tileBorder:'#0b5cd5', stroke:'#fff', badgeBg:'#fff', badgeText:'#0b5cd5' },
+    off: { tileBg:'#e7eaee', tileBorder:'#dfe3e8', stroke:'#aab2bb', badgeBg:'#fff', badgeText:'#9aa3ad' },
+  });
+
+  render('P3-grid', {
+    on:  { tileBg:'#fff', tileBorder:'#e3e7ec', stroke:'#1f9ed6', badgeBg:'#0b5cd5', badgeText:'#fff' },
+    off: { tileBg:'#fff', tileBorder:'#e3e7ec', stroke:'#aab2bb', badgeBg:'#c9ced6', badgeText:'#fff' },
+    backplate: { on:'#e8f4fb', off:'#eef0f2' },
+  });
+</script>
+</body>
+</html>
