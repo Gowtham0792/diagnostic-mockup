@@ -1,8 +1,14 @@
-import { Menu } from 'lucide-react'
+import { useState } from 'react'
+import { ChevronLeft, ChevronRight, Menu } from 'lucide-react'
 import zfLogo from '../assets/ZF_logo_STD_Blue_3CC.svg'
 import SelectVehicle from './steps/SelectVehicle'
+import SelectFunctions from './steps/SelectFunctions'
 import Stepper from './Stepper'
 import { authoringSteps } from './steps'
+
+// steps with real content, in order; the rest of `authoringSteps` are shown
+// in the progress bar but aren't modelled yet
+const STEP_SCREENS = [SelectVehicle, SelectFunctions]
 
 /**
  * Web-based parameter Authoring Tool (Option D). Separate page from the field
@@ -16,6 +22,10 @@ const ZF_BLUE = '#0b5cd5'
 const AVATAR_ORANGE = '#e8730c'
 
 export default function AuthoringApp() {
+  const [stepIndex, setStepIndex] = useState(0)
+  const maxBuiltIndex = STEP_SCREENS.length - 1
+  const StepScreen = STEP_SCREENS[stepIndex]
+
   return (
     <div className="flex h-screen w-screen flex-col overflow-hidden bg-white font-sans text-[#1a1a1a]">
       <header
@@ -45,12 +55,32 @@ export default function AuthoringApp() {
         </span>
       </header>
 
-      <Stepper steps={authoringSteps} currentIndex={0} />
+      <Stepper steps={authoringSteps} currentIndex={stepIndex} />
 
       {/* Authoring canvas */}
       <main className="flex min-h-0 flex-1 flex-col" data-area="authoring-canvas">
-        <SelectVehicle />
+        <StepScreen />
       </main>
+
+      <div className="flex shrink-0 items-center justify-between border-t border-[#e5e8ec] px-6 py-2.5">
+        <button
+          type="button"
+          disabled={stepIndex === 0}
+          onClick={() => setStepIndex((i) => Math.max(0, i - 1))}
+          className="flex items-center gap-1 rounded-md border border-[#dfe3e8] px-3 py-1.5 text-[13px] font-semibold text-[#5a6b7b] disabled:opacity-40"
+        >
+          <ChevronLeft className="h-4 w-4" /> Back
+        </button>
+        <button
+          type="button"
+          disabled={stepIndex === maxBuiltIndex}
+          onClick={() => setStepIndex((i) => Math.min(maxBuiltIndex, i + 1))}
+          className="flex items-center gap-1 rounded-md px-3 py-1.5 text-[13px] font-semibold text-white disabled:opacity-40"
+          style={{ background: ZF_BLUE }}
+        >
+          Next <ChevronRight className="h-4 w-4" />
+        </button>
+      </div>
     </div>
   )
 }
