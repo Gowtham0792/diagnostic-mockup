@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react'
+import type { FeatureIconProps } from './FeatureTile'
 import { AdvancedMultiVoltageIcon } from './icons'
 
 // One entry per feature icon. Add more as they're generated — the group
@@ -6,7 +7,7 @@ import { AdvancedMultiVoltageIcon } from './icons'
 export interface FunctionDef {
   id: string
   label: string
-  Icon: ComponentType<{ className?: string }>
+  Icon: ComponentType<FeatureIconProps>
 }
 
 export const FUNCTIONS: Record<string, FunctionDef> = {

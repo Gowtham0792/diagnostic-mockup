@@ -1,17 +1,22 @@
 import { useState } from 'react'
 import FeatureTile from '../FeatureTile'
+import SegmentedTabs from '../SegmentedTabs'
 import { functionGroups, FUNCTIONS } from '../functionsCatalog'
 
 /**
- * Authoring step 2 — "Select Functions". Same grouped-section layout as
- * step 1's "Select vehicle": a bold group label with a trailing dashed rule,
- * then a wrapping row of tiles. Three groups: Essential Functions, Extended
- * Functions, Data & Subsystem. Icons are added to functionsCatalog.ts one at
- * a time as they're generated — empty groups just show a placeholder note.
+ * Authoring step 2 — "Select Functions". Same pattern as step 1's
+ * "Select vehicle": a segmented pill control picks the group (Essential
+ * Functions / Extended Functions / Data & Subsystem), then that group's tiles
+ * show as a single row. Selected-tile treatment matches the trailer tiles
+ * exactly (see FeatureTile). Icons are added to functionsCatalog.ts one at a
+ * time as they're generated — an empty group just shows a placeholder note.
  */
 
 export default function SelectFunctions() {
+  const [group, setGroup] = useState(functionGroups[0].id)
   const [selected, setSelected] = useState<Set<string>>(new Set())
+
+  const activeGroup = functionGroups.find((g) => g.id === group) ?? functionGroups[0]
 
   const toggle = (id: string) =>
     setSelected((prev) => {
@@ -29,36 +34,32 @@ export default function SelectFunctions() {
         <span className="text-[#1a1a1a]">Select Functions</span>
       </h1>
 
-      <div className="mt-5 space-y-8">
-        {functionGroups.map((group) => (
-          <section key={group.id}>
-            <div className="flex items-center gap-3">
-              <span className="text-[14px] font-bold text-[#1a1a1a]">{group.label}</span>
-              <span className="flex-1 border-t border-dashed border-[#c9c9c9]" />
-            </div>
+      <div className="mt-4">
+        <SegmentedTabs
+          options={functionGroups.map((g) => ({ id: g.id, label: g.label }))}
+          active={group}
+          onChange={setGroup}
+        />
+      </div>
 
-            <div className="mt-3 flex flex-wrap gap-4">
-              {group.functionIds.length === 0 ? (
-                <span className="text-[12px] text-[#8a94a0]">No functions here yet</span>
-              ) : (
-                group.functionIds.map((id) => {
-                  const fn = FUNCTIONS[id]
-                  const isSelected = selected.has(id)
-                  return (
-                    <FeatureTile
-                      key={id}
-                      label={fn.label}
-                      selected={isSelected}
-                      onClick={() => toggle(id)}
-                    >
-                      <fn.Icon className="h-14 w-14" />
-                    </FeatureTile>
-                  )
-                })
-              )}
-            </div>
-          </section>
-        ))}
+      <div key={group} className="mt-5 flex flex-wrap gap-3.5 pt-1">
+        {activeGroup.functionIds.length === 0 ? (
+          <span className="text-[12px] text-[#8a94a0]">No functions here yet</span>
+        ) : (
+          activeGroup.functionIds.map((id) => {
+            const fn = FUNCTIONS[id]
+            const isSelected = selected.has(id)
+            return (
+              <FeatureTile
+                key={id}
+                label={fn.label}
+                Icon={fn.Icon}
+                selected={isSelected}
+                onClick={() => toggle(id)}
+              />
+            )
+          })
+        )}
       </div>
     </div>
   )

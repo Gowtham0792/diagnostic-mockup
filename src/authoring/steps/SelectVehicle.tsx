@@ -1,6 +1,7 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import clsx from 'clsx'
 import { Check } from 'lucide-react'
+import SegmentedTabs from '../SegmentedTabs'
 import { vehicleGroups, type TrailerFront } from '../vehicles'
 
 /**
@@ -20,16 +21,7 @@ export default function SelectVehicle() {
   const [kind, setKind] = useState(vehicleGroups[0].id)
   const [selected, setSelected] = useState<string | null>(null)
 
-  const activeIndex = Math.max(0, vehicleGroups.findIndex((g) => g.id === kind))
-  const group = vehicleGroups[activeIndex]
-
-  const btnRefs = useRef<(HTMLButtonElement | null)[]>([])
-  const [pill, setPill] = useState({ left: 0, width: 0 })
-
-  useLayoutEffect(() => {
-    const el = btnRefs.current[activeIndex]
-    if (el) setPill({ left: el.offsetLeft, width: el.offsetWidth })
-  }, [activeIndex])
+  const group = vehicleGroups.find((g) => g.id === kind) ?? vehicleGroups[0]
 
   return (
     <div className="p-6">
@@ -40,30 +32,12 @@ export default function SelectVehicle() {
       </h1>
 
       {/* kind selector with sliding highlight */}
-      <div className="relative mt-4 inline-flex overflow-hidden rounded-[10px] border-[1.5px] border-[#dfe3e8]">
-        <span
-          aria-hidden
-          className="absolute inset-y-0 rounded-[8px] bg-[#0b5cd5] transition-[left,width] duration-300 ease-[cubic-bezier(0.2,0.7,0.3,1)]"
-          style={{ left: pill.left, width: pill.width }}
+      <div className="mt-4">
+        <SegmentedTabs
+          options={vehicleGroups.map((g) => ({ id: g.id, label: g.label }))}
+          active={kind}
+          onChange={setKind}
         />
-        {vehicleGroups.map((g, i) => (
-          <button
-            key={g.id}
-            ref={(el) => {
-              btnRefs.current[i] = el
-            }}
-            type="button"
-            aria-pressed={kind === g.id}
-            onClick={() => setKind(g.id)}
-            className={clsx(
-              'relative z-10 px-4 py-2 text-[13px] font-semibold transition-colors duration-200',
-              i > 0 && 'border-l border-[#dfe3e8]',
-              kind === g.id ? 'text-white' : 'text-[#5a6b7b] hover:text-[#1a1a1a]',
-            )}
-          >
-            {g.label}
-          </button>
-        ))}
       </div>
 
       {/* layouts for the selected kind — re-keyed so tiles re-animate on change */}
