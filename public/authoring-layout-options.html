@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Authoring tool layout — modern shell options v2</title>
+<title>Authoring tool layout — trend-grounded options v3</title>
 <style>
   :root{
     --zf-blue:#0b5cd5; --accent:#1f9ed6; --ink:#16202b; --muted:#5a6b7b;
@@ -14,227 +14,224 @@
     font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
   .wrap{max-width:1100px;margin:0 auto;padding:38px 20px 90px}
   h1{font-size:25px;margin:0 0 4px}
-  .sub{color:var(--muted);margin:0 0 20px;max-width:80ch;font-size:14px}
+  .sub{color:var(--muted);margin:0 0 8px;max-width:82ch;font-size:14px}
+  .basis{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;
+    font-size:13px;color:var(--muted);margin:14px 0 6px}
+  .basis b{color:var(--ink)}
 
   section.opt{background:var(--panel);border:1px solid var(--line);border-radius:16px;
     padding:20px 22px 24px;margin-top:20px}
   section.opt h2{font-size:17px;margin:0 0 3px}
-  section.opt .why{color:var(--muted);font-size:13.5px;margin:0 0 16px;max-width:82ch}
+  section.opt .why{color:var(--muted);font-size:13.5px;margin:0 0 6px;max-width:82ch}
+  section.opt .trend{font-size:12px;color:#083f93;margin:0 0 16px}
   .tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
     color:#083f93;background:#e7f0ff;border-radius:999px;padding:2px 8px;margin-left:8px;vertical-align:2px}
 
-  .frame{border-radius:14px;overflow:hidden}
-  .mock{width:100%;height:460px;position:relative;font-size:11px}
+  .frame{border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+  .mock{width:100%;height:460px;position:relative;font-size:11px;overflow:hidden}
   .mock *{box-sizing:border-box}
 
-  /* ============ 1. Glass canvas ============ */
-  .g-canvas{
-    height:100%;position:relative;overflow:hidden;
-    background:
-      radial-gradient(700px 500px at 15% -10%, rgba(43,110,255,.35), transparent 60%),
-      radial-gradient(600px 500px at 110% 30%, rgba(31,158,214,.3), transparent 60%),
-      radial-gradient(500px 400px at 50% 120%, rgba(120,60,220,.25), transparent 60%),
-      #0a0e1a;
-  }
-  .g-nav{position:absolute;top:16px;left:50%;transform:translateX(-50%);display:flex;gap:14px;
-    align-items:center;padding:8px 18px;border-radius:999px;background:rgba(255,255,255,.07);
-    border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(10px);box-shadow:0 10px 30px rgba(0,0,0,.35)}
-  .g-nav .n{width:9px;height:9px;border-radius:99px;background:rgba(255,255,255,.25)}
-  .g-nav .n.on{background:#4fd1ff;box-shadow:0 0 10px #4fd1ff}
-  .g-nav .lbl{color:#dce7ff;font-weight:700;font-size:11px;letter-spacing:.02em}
-  .g-body{position:absolute;top:64px;left:24px;right:24px;bottom:20px;overflow:auto}
-  .g-eyebrow{color:#7ea8ff;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
-  .g-h{color:#fff;font-size:20px;font-weight:800;margin-bottom:14px;letter-spacing:-.01em}
-  .g-card{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);border-radius:16px;
-    padding:14px;backdrop-filter:blur(8px);margin-bottom:14px}
-  .g-tiles{display:flex;gap:10px}
-  .g-tile{width:56px;height:56px;border-radius:12px;background:rgba(255,255,255,.06);
-    border:1px solid rgba(255,255,255,.16);display:grid;place-items:center;color:#bcd4ff;font-weight:700}
-  .g-tile.on{background:rgba(79,209,255,.16);border-color:#4fd1ff;color:#fff;
-    box-shadow:0 0 22px rgba(79,209,255,.45)}
+  /* ============ 1. Calm editorial minimalism ============ */
+  .m1{height:100%;background:#fff;padding:26px 30px;overflow:auto}
+  .m1-line{height:2px;background:#eceff3;position:relative;margin-bottom:22px}
+  .m1-line-fill{position:absolute;left:0;top:0;height:100%;width:40%;background:var(--ink)}
+  .m1-eyebrow{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .m1-h{font-size:30px;font-weight:800;letter-spacing:-0.02em;margin:0 0 20px;color:var(--ink)}
+  .m1-tiles{display:flex;gap:14px;margin-bottom:26px}
+  .m1-tile{width:58px;height:58px;border:1px solid #d8dbe0;display:grid;place-items:center;color:#9aa3ad;font-weight:600}
+  .m1-tile.on{border-color:var(--ink);background:var(--ink);color:#fff}
+  .m1-hr{border-top:1px solid #eceff3;margin:26px 0}
+  .m1-eyebrow2{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .m1-h2{font-size:22px;font-weight:800;letter-spacing:-.02em;margin:0 0 14px}
 
-  /* ============ 2. Bento grid ============ */
-  .b-wrap{height:100%;background:#f3f5f8;padding:16px;display:grid;grid-template-columns:1.5fr 1fr;
-    grid-template-rows:1fr 1fr;gap:12px}
-  .b-card{background:#fff;border-radius:20px;box-shadow:0 10px 26px rgba(16,32,50,.10);padding:16px;
+  /* ============ 2. Progressive wizard ============ */
+  .m2{height:100%;background:#fbfbfc;display:flex;flex-direction:column}
+  .m2-bar{height:3px;background:#e6e9ee}
+  .m2-bar-fill{height:100%;width:40%;background:var(--zf-blue)}
+  .m2-top{display:flex;justify-content:space-between;align-items:center;padding:10px 22px;font-size:11px}
+  .m2-crumb{color:var(--muted)}
+  .m2-crumb b{color:var(--ink);font-weight:700}
+  .m2-crumb .sep{color:#c7ccd2;margin:0 5px}
+  .m2-save{color:var(--muted);text-decoration:underline;text-decoration-color:#c7ccd2}
+  .m2-body{flex:1;padding:16px 22px;overflow:auto}
+  .m2-h{font-size:22px;font-weight:800;margin:4px 0 14px}
+  .m2-tiles{display:flex;gap:12px}
+  .m2-tile{width:60px;height:60px;border-radius:12px;border:1.5px solid var(--accent);background:#fff;
+    display:grid;place-items:center;color:var(--accent);font-weight:700;opacity:0;
+    animation:m2in .35s ease forwards}
+  .m2-tile.on{background:var(--zf-blue);border-color:var(--zf-blue);color:#fff}
+  .m2-tile:nth-child(2){animation-delay:.06s}
+  .m2-tile:nth-child(3){animation-delay:.12s}
+  @keyframes m2in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ============ 3. Active bento (hover to reveal) ============ */
+  .m3{height:100%;background:#f3f5f8;padding:18px;display:grid;grid-template-columns:1.4fr 1fr;
+    grid-template-rows:1fr 1fr;gap:14px}
+  .m3-card{background:#fff;border-radius:18px;box-shadow:0 3px 10px rgba(16,32,50,.06);padding:16px;
     position:relative;overflow:hidden}
-  .b-card.big{grid-row:span 2}
-  .b-eyebrow{font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
-  .b-h{font-size:15px;font-weight:800;margin-bottom:10px;letter-spacing:-.01em}
-  .b-tiles{display:flex;gap:8px;flex-wrap:wrap}
-  .b-tile{width:52px;height:52px;border-radius:10px;background:#f5f9fc;border:1.5px solid var(--accent);
-    display:grid;place-items:center;color:var(--accent);font-weight:700}
-  .b-tile.on{background:var(--zf-blue);border-color:var(--zf-blue);color:#fff}
-  .b-dot{position:absolute;right:14px;top:14px;width:22px;height:22px;border-radius:99px;background:#eef6fb;
-    color:var(--zf-blue);display:grid;place-items:center;font-size:10px;font-weight:800}
+  .m3-card.big{grid-row:span 2}
+  .m3-eyebrow{font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .m3-h{font-size:15px;font-weight:800;margin-bottom:10px}
+  .m3-tiles{display:flex;gap:8px;flex-wrap:wrap}
+  .m3-tile{width:54px;height:54px;border-radius:10px;border:1.5px solid #dfe3e8;background:#fafbfc;
+    display:grid;place-items:center;color:var(--muted);font-weight:700;position:relative;
+    transition:box-shadow .18s,border-color .18s}
+  .m3-tile.on{border-color:var(--zf-blue);color:var(--zf-blue)}
+  .m3-tile:hover{border-color:var(--accent);box-shadow:0 6px 16px rgba(31,158,214,.18)}
+  .m3-peek{position:absolute;left:0;right:0;bottom:0;background:var(--zf-blue);color:#fff;font-size:8px;
+    text-align:center;padding:2px 0;transform:translateY(100%);transition:transform .18s}
+  .m3-tile:hover .m3-peek{transform:translateY(0)}
+  .m3-hint{position:absolute;right:14px;top:14px;font-size:9.5px;color:var(--muted);font-style:italic}
 
-  /* ============ 3. Vertical timeline glow ============ */
-  .t-wrap{height:100%;background:#fbfbfd;padding:22px 22px 22px 30px;overflow:auto;position:relative}
-  .t-line{position:absolute;left:38px;top:24px;bottom:24px;width:2px;
-    background:linear-gradient(180deg,#0b5cd5,#1f9ed6 40%,#dfe3e8 60%)}
-  .t-item{position:relative;padding-left:32px;margin-bottom:22px}
-  .t-node{position:absolute;left:-1px;top:2px;width:20px;height:20px;border-radius:99px;background:#fff;
-    border:3px solid #0b5cd5;z-index:2}
-  .t-node.glow{box-shadow:0 0 0 6px rgba(11,92,213,.16);animation:pulse 1.8s ease-in-out infinite}
-  .t-node.dim{border-color:#cfd6de}
-  @keyframes pulse{0%,100%{box-shadow:0 0 0 5px rgba(11,92,213,.14)}50%{box-shadow:0 0 0 9px rgba(11,92,213,.05)}}
-  .t-eyebrow{font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
-  .t-h{font-size:15px;font-weight:800;margin:2px 0 8px}
-  .t-tiles{display:flex;gap:8px}
-  .t-tile{width:48px;height:48px;border-radius:10px;border:1.5px solid var(--accent);background:#fff;
-    display:grid;place-items:center;color:var(--accent);font-weight:700}
-  .t-tile.on{background:var(--zf-blue);border-color:var(--zf-blue);color:#fff}
-  .t-future{color:var(--muted);font-size:12px;font-weight:600}
-
-  /* ============ 4. Floating dock ============ */
-  .d-wrap{height:100%;background:#fff;position:relative;overflow:hidden}
-  .d-top{position:absolute;top:18px;left:24px;color:var(--muted);font-size:11px;font-weight:700}
-  .d-h{position:absolute;top:38px;left:24px;font-size:26px;font-weight:800;letter-spacing:-.01em}
-  .d-tiles{position:absolute;top:110px;left:24px;display:flex;gap:12px}
-  .d-tile{width:62px;height:62px;border-radius:14px;border:1.5px solid var(--accent);background:#fff;
-    display:grid;place-items:center;color:var(--accent);font-weight:700}
-  .d-tile.on{background:var(--zf-blue);border-color:var(--zf-blue);color:#fff;box-shadow:0 10px 22px rgba(11,92,213,.3)}
-  .d-fab{position:absolute;right:22px;bottom:70px;width:46px;height:46px;border-radius:99px;background:var(--zf-blue);
-    color:#fff;display:grid;place-items:center;font-size:18px;font-weight:800;box-shadow:0 10px 20px rgba(11,92,213,.4)}
-  .d-dock{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:10px;
-    align-items:center;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.7);
-    border:1px solid rgba(0,0,0,.06);backdrop-filter:blur(10px);box-shadow:0 14px 30px rgba(16,32,50,.18)}
-  .d-node{width:30px;height:30px;border-radius:99px;background:#eef1f5;color:var(--muted);display:grid;
-    place-items:center;font-size:11px;font-weight:800;transition:transform .15s}
-  .d-node.on{background:var(--zf-blue);color:#fff;transform:translateY(-6px) scale(1.15);
-    box-shadow:0 10px 18px rgba(11,92,213,.4)}
+  /* ============ 4. Dark mode, restrained ============ */
+  .m4{height:100%;background:#0b0e13;color:#e7ebf0;padding:24px 26px;overflow:auto}
+  .m4-top{display:flex;justify-content:space-between;font-size:10.5px;color:#7c8794;margin-bottom:18px}
+  .m4-track{height:3px;background:#1c212b;border-radius:99px;overflow:hidden;margin-bottom:22px}
+  .m4-track-fill{height:100%;width:40%;background:var(--accent)}
+  .m4-eyebrow{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#5b93c9;margin-bottom:6px}
+  .m4-h{font-size:24px;font-weight:800;letter-spacing:-.01em;margin:0 0 16px;color:#fff}
+  .m4-tiles{display:flex;gap:12px}
+  .m4-tile{width:58px;height:58px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:#12161e;
+    display:grid;place-items:center;color:#8fa6c2;font-weight:700}
+  .m4-tile.on{border-color:var(--accent);color:#fff;background:#122735}
 
   .foot{margin-top:34px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
   .foot b{color:var(--ink)}
+  .sources{margin-top:10px;font-size:12px;color:var(--muted)}
+  .sources a{color:#083f93}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Authoring tool layout — modern shell options v2</h1>
-  <p class="sub">Further than before — leaning into current visual language:
-  glass/blur, glow, bento grids, floating docks, dark canvases. Same steps, same
-  data, four different feels.</p>
+  <h1>Authoring tool layout — trend-grounded options v3</h1>
+  <p class="sub">Went and checked what's actually current before proposing anything
+  this time, rather than guessing. The consistent theme across 2026 UI-trend
+  coverage is <b>restraint</b> — glassmorphism, bento grids and dark mode are all
+  still current, but the flashy, gradient-heavy, glowing version of them is already
+  reading as dated/AI-generated. What's replacing it: calm minimalism, purposeful
+  (not decorative) motion, and bento/progressive-disclosure patterns that reveal
+  detail on interaction instead of showing everything at once.</p>
+  <div class="basis">
+    <b>What changed vs. last time:</b> dropped the gradient-mesh glow and floating
+    glass-everywhere look. These four lean on typography, whitespace and restrained
+    motion instead of visual effects to feel current.
+  </div>
 
   <section class="opt">
-    <h2>1 · Glass canvas, dark <span class="tag">boldest</span></h2>
-    <p class="why">Dark gradient-mesh background, a floating frosted-glass step
-    navigator pill, and glass cards (blurred, translucent) for each step's content.
-    Selected tiles glow cyan instead of just filling solid. The most "premium
-    product" feel of the four — closest to what Linear/Vercel/Raycast style tools
-    look like today.</p>
+    <h2>1 · Calm editorial minimalism</h2>
+    <p class="why">No borders-as-decoration, no shadows, no color except one accent
+    used once. A thin progress hairline, a small uppercase eyebrow, then a large
+    confident heading. This is the "quiet luxury" register — closest to how Linear's
+    or Arc's own marketing pages actually look today.</p>
+    <p class="trend">Grounded in: 2026 coverage naming minimalist/calm design and
+    expressive typography as the dominant SaaS direction.</p>
     <div class="frame"><div class="mock">
-      <div class="g-canvas">
-        <div class="g-nav">
-          <span class="n"></span><span class="lbl">Select vehicle</span>
-          <span class="n on"></span><span class="lbl" style="color:#fff">Select Functions</span>
-          <span class="n"></span><span class="n"></span><span class="n"></span>
+      <div class="m1">
+        <div class="m1-line"><div class="m1-line-fill"></div></div>
+        <div class="m1-eyebrow">Step 1 of 5</div>
+        <div class="m1-h">Select vehicle</div>
+        <div class="m1-tiles">
+          <div class="m1-tile on">🚚</div><div class="m1-tile">🚚</div><div class="m1-tile">🚚</div>
         </div>
-        <div class="g-body">
-          <div class="g-eyebrow">Step 2 / 5</div>
-          <div class="g-h">Select Functions</div>
-          <div class="g-card">
-            <div class="g-tiles">
-              <div class="g-tile on">⚡</div>
-              <div class="g-tile">◎</div>
-              <div class="g-tile">📡</div>
-            </div>
-          </div>
+        <div class="m1-hr"></div>
+        <div class="m1-eyebrow2">Step 2 of 5</div>
+        <div class="m1-h2">Select Functions</div>
+        <div class="m1-tiles"><div class="m1-tile on">⚡</div><div class="m1-tile">◎</div></div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="opt">
+    <h2>2 · Progressive wizard, practical</h2>
+    <p class="why">A thin top progress line, a plain-text breadcrumb of steps
+    (current bold), and a "Save &amp; exit" link — the pattern behind Amazon's
+    checkout and most high-completion-rate wizards. Tiles fade/slide in on entry,
+    restrained rather than showy.</p>
+    <p class="trend">Grounded in: progressive-disclosure wizard best practice —
+    step numbering + persistent progress + an escape hatch reduce drop-off.</p>
+    <div class="frame"><div class="mock">
+      <div class="m2">
+        <div class="m2-bar"><div class="m2-bar-fill"></div></div>
+        <div class="m2-top">
+          <div class="m2-crumb">Vehicle<span class="sep">›</span><b>Functions</b><span class="sep">›</span>ABS layout<span class="sep">›</span>Parameters<span class="sep">›</span>Publish</div>
+          <div class="m2-save">Save &amp; exit</div>
+        </div>
+        <div class="m2-body">
+          <div class="m2-h">Select Functions</div>
+          <div class="m2-tiles"><div class="m2-tile on">⚡</div><div class="m2-tile">◎</div><div class="m2-tile">📡</div></div>
         </div>
       </div>
     </div></div>
   </section>
 
   <section class="opt">
-    <h2>2 · Bento grid workspace</h2>
-    <p class="why">An asymmetric tiled grid (Apple-style "bento box") instead of a
-    single scrolling column — vehicle selection in one large panel, functions in a
-    smaller one beside it, both visible without scrolling past each other. Cards get
-    generous rounding and soft elevation instead of flat borders.</p>
+    <h2>3 · Active bento <span class="tag">interactive — hover it</span></h2>
+    <p class="why">A bento grid, but calm: neutral soft shadows, no color wash. The
+    trend isn't just the asymmetric grid — it's that tiles now reveal something on
+    interaction instead of sitting static. Hover a function tile below; a one-line
+    peek slides up.</p>
+    <p class="trend">Grounded in: 2026 coverage describing bento grids "going
+    active" — hover reveals an extra layer instead of just a color change.</p>
     <div class="frame"><div class="mock">
-      <div class="b-wrap">
-        <div class="b-card big">
-          <div class="b-eyebrow">Step 1</div>
-          <div class="b-h">Select vehicle</div>
-          <div class="b-tiles">
-            <div class="b-tile on">🚚</div><div class="b-tile">🚚</div><div class="b-tile">🚚</div><div class="b-tile">🚚</div>
+      <div class="m3">
+        <div class="m3-card big">
+          <div class="m3-eyebrow">Step 1</div>
+          <div class="m3-h">Select vehicle</div>
+          <div class="m3-tiles">
+            <div class="m3-tile on">🚚<span class="m3-peek">Drawbar</span></div>
+            <div class="m3-tile">🚚<span class="m3-peek">Semi</span></div>
+            <div class="m3-tile">🚚<span class="m3-peek">Central</span></div>
           </div>
         </div>
-        <div class="b-card">
-          <div class="b-dot">2</div>
-          <div class="b-eyebrow">Step 2</div>
-          <div class="b-h">Select Functions</div>
-          <div class="b-tiles"><div class="b-tile on">⚡</div><div class="b-tile">◎</div></div>
-        </div>
-        <div class="b-card">
-          <div class="b-eyebrow">Progress</div>
-          <div class="b-h" style="font-size:13px">2 of 5 steps complete</div>
-          <div style="height:6px;border-radius:99px;background:#eef1f5;overflow:hidden">
-            <div style="height:100%;width:40%;background:var(--zf-blue)"></div>
+        <div class="m3-card">
+          <div class="m3-hint">hover ↴</div>
+          <div class="m3-eyebrow">Step 2</div>
+          <div class="m3-h">Select Functions</div>
+          <div class="m3-tiles">
+            <div class="m3-tile on">⚡<span class="m3-peek">8–32 V</span></div>
+            <div class="m3-tile">◎<span class="m3-peek">ABS</span></div>
           </div>
+        </div>
+        <div class="m3-card">
+          <div class="m3-eyebrow">Progress</div>
+          <div class="m3-h" style="font-size:13px">2 of 5 steps</div>
         </div>
       </div>
     </div></div>
   </section>
 
   <section class="opt">
-    <h2>3 · Vertical timeline, glowing nodes</h2>
-    <p class="why">A connecting line runs down the page with a node per step; the
-    active node pulses with a soft glow, done nodes fill solid, future ones stay
-    dim. Editorial/changelog feel — reads as a story being built up, not a form
-    being filled in.</p>
+    <h2>4 · Dark mode, restrained identity</h2>
+    <p class="why">Flat near-black, not a gradient wash — 1px hairline borders, one
+    accent color spent only on the active state and progress fill. No blur, no glow.
+    Dark as a considered default, not a toggle bolted on.</p>
+    <p class="trend">Grounded in: 2026 coverage on dark mode becoming a full visual
+    identity for tech/fintech tools, contrasted with the "everything glows" version
+    that's already fading.</p>
     <div class="frame"><div class="mock">
-      <div class="t-wrap">
-        <div class="t-line"></div>
-        <div class="t-item">
-          <div class="t-node"></div>
-          <div class="t-eyebrow">Step 1 · Done</div>
-          <div class="t-h">Select vehicle</div>
-          <div class="t-tiles"><div class="t-tile on">🚚</div><div class="t-tile">🚚</div></div>
-        </div>
-        <div class="t-item">
-          <div class="t-node glow"></div>
-          <div class="t-eyebrow">Step 2 · Current</div>
-          <div class="t-h">Select Functions</div>
-          <div class="t-tiles"><div class="t-tile on">⚡</div><div class="t-tile">◎</div></div>
-        </div>
-        <div class="t-item">
-          <div class="t-node dim"></div>
-          <div class="t-future">ABS layout — up next</div>
-        </div>
-      </div>
-    </div></div>
-  </section>
-
-  <section class="opt">
-    <h2>4 · Floating dock, app-like</h2>
-    <p class="why">Almost no top chrome — a big confident title, tiles right below
-    it, full-bleed white canvas. Navigation moves to a floating frosted "dock" fixed
-    at the bottom (macOS-dock style — the active step lifts and enlarges), with a
-    round floating action button for the primary action. Feels like a native app,
-    not a web form.</p>
-    <div class="frame"><div class="mock">
-      <div class="d-wrap">
-        <div class="d-top">Step 2 of 5</div>
-        <div class="d-h">Select Functions</div>
-        <div class="d-tiles"><div class="d-tile on">⚡</div><div class="d-tile">◎</div><div class="d-tile">📡</div></div>
-        <div class="d-fab">→</div>
-        <div class="d-dock">
-          <div class="d-node">1</div><div class="d-node on">2</div><div class="d-node">3</div>
-          <div class="d-node">4</div><div class="d-node">5</div>
-        </div>
+      <div class="m4">
+        <div class="m4-top"><span>iABS Authoring</span><span>Step 2 of 5</span></div>
+        <div class="m4-track"><div class="m4-track-fill"></div></div>
+        <div class="m4-eyebrow">Select Functions</div>
+        <div class="m4-h">Essential Functions</div>
+        <div class="m4-tiles"><div class="m4-tile on">⚡</div><div class="m4-tile">◎</div><div class="m4-tile">📡</div></div>
       </div>
     </div></div>
   </section>
 
   <div class="foot">
-    <b>Recommendation:</b> <b>1 (glass canvas)</b> for the strongest "modern,
-    sophisticated" read — it's the biggest visual departure and the closest to
-    current premium-SaaS design language. <b>2 (bento)</b> is the most practical for
-    an authoring tool with many fields, since it shows more at once without feeling
-    like a long form. <b>3</b> and <b>4</b> are more distinctive but cost some
-    density/functionality for style. Tell me which and I'll rebuild
-    <code>AuthoringApp.tsx</code> around it.
+    <b>Recommendation:</b> <b>1 (calm editorial)</b> or <b>2 (progressive wizard)</b>
+    for the most defensible "modern and sophisticated" read that will still look
+    right in two years — both lean on typography and restraint rather than effects.
+    <b>3</b> is worth it specifically because the hover-reveal is genuinely useful
+    (surfaces detail without a click). <b>4</b> if you want a dark-first identity for
+    the whole authoring tool, not just this page.
   </div>
+  <div class="sources">Sources: <a href="https://www.thefrontendcompany.com/posts/ui-trends">The Frontend Company — UI Trends 2026</a>,
+  <a href="https://www.saasui.design/blog/7-saas-ui-design-trends-2026">SaaS UI Design — 7 Trends for 2026</a>,
+  <a href="https://blog.brucira.com/top-ui-design-trends/">Brucira — Glassmorphism, Dark Mode, Bento Grids</a>,
+  <a href="https://dev.to/studiomeyer_io/web-design-trends-2026-what-actually-held-up-after-six-months-23p8">Studio Meyer — What Actually Held Up</a>,
+  <a href="https://lollypop.design/blog/2026/january/wizard-ui-design/">Lollypop — Wizard UI Design</a>.</div>
 </div>
 </body>
 </html>
