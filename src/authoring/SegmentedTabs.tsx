@@ -1,11 +1,15 @@
-import { useLayoutEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 
 /**
- * The pill-style segmented control used by "Select vehicle" (Drawbar trailer /
+ * The group/kind selector used by "Select vehicle" (Drawbar trailer /
  * Semitrailers / Central axle trailer) and reused by "Select Functions"
- * (Essential / Extended / Data & Subsystem) so both look identical. A sliding
- * ZF-blue highlight animates to whichever segment is active.
+ * (Essential / Extended / Data & Subsystem) so both look identical.
+ *
+ * Rendered as independent rounded chips in a wrapping row rather than one
+ * joined pill with a sliding highlight — a joined pill only works as a single
+ * line, so on narrow screens with longer labels it either overflows (forcing
+ * a horizontal scrollbar) or gets clipped. Chips just wrap to a second line
+ * and never need to scroll, at any width.
  */
 
 export interface SegmentOption {
@@ -22,45 +26,24 @@ export default function SegmentedTabs({
   active: string
   onChange: (id: string) => void
 }) {
-  const activeIndex = Math.max(0, options.findIndex((o) => o.id === active))
-  const btnRefs = useRef<(HTMLButtonElement | null)[]>([])
-  const [pill, setPill] = useState({ left: 0, width: 0 })
-
-  useLayoutEffect(() => {
-    const el = btnRefs.current[activeIndex]
-    if (el) setPill({ left: el.offsetLeft, width: el.offsetWidth })
-  }, [activeIndex])
-
   return (
-    // the pill itself never wraps (its sliding highlight assumes one row), so on
-    // narrow screens it scrolls horizontally *within its own box* instead of
-    // forcing the whole page to scroll sideways
-    <div className="max-w-full overflow-x-auto">
-      <div className="relative inline-flex overflow-hidden rounded-[10px] border-[1.5px] border-[#dfe3e8]">
-        <span
-          aria-hidden
-          className="absolute inset-y-0 rounded-[8px] bg-[#0b5cd5] transition-[left,width] duration-300 ease-[cubic-bezier(0.2,0.7,0.3,1)]"
-          style={{ left: pill.left, width: pill.width }}
-        />
-        {options.map((o, i) => (
-          <button
-            key={o.id}
-            ref={(el) => {
-              btnRefs.current[i] = el
-            }}
-            type="button"
-            aria-pressed={active === o.id}
-            onClick={() => onChange(o.id)}
-            className={clsx(
-              'relative z-10 shrink-0 whitespace-nowrap px-3 py-2 text-[12.5px] font-semibold transition-colors duration-200 sm:px-4 sm:text-[13px]',
-              i > 0 && 'border-l border-[#dfe3e8]',
-              active === o.id ? 'text-white' : 'text-[#5a6b7b] hover:text-[#1a1a1a]',
-            )}
-          >
-            {o.label}
-          </button>
-        ))}
-      </div>
+    <div className="flex flex-wrap gap-2">
+      {options.map((o) => (
+        <button
+          key={o.id}
+          type="button"
+          aria-pressed={active === o.id}
+          onClick={() => onChange(o.id)}
+          className={clsx(
+            'rounded-full border-[1.5px] px-3.5 py-1.5 text-[12.5px] font-semibold transition-colors duration-200 sm:px-4 sm:text-[13px]',
+            active === o.id
+              ? 'border-[#0b5cd5] bg-[#0b5cd5] text-white'
+              : 'border-[#dfe3e8] bg-white text-[#5a6b7b] hover:border-[#bcd3f5] hover:text-[#1a1a1a]',
+          )}
+        >
+          {o.label}
+        </button>
+      ))}
     </div>
   )
 }
