@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Advanced Multi-Voltage — matched to app style</title>
+<style>
+  :root{ --ink:#16202b; --muted:#5a6b7b; --line:#dfe3e8; --bg:#eef1f4; --panel:#fff;
+    --accent:#1f9ed6; --selected:#0b5cd5; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:760px;margin:0 auto;padding:38px 20px 90px}
+  h1{font-size:22px;margin:0 0 4px}
+  .sub{color:var(--muted);margin:0 0 20px;max-width:70ch;font-size:14px}
+  .row{display:flex;gap:28px;align-items:flex-start;background:var(--panel);
+    border:1px solid var(--line);border-radius:14px;padding:24px}
+  .col{display:flex;flex-direction:column;align-items:center;gap:10px}
+  .tag{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+  /* app tile — same classes/values as src/authoring/steps/SelectVehicle.tsx tiles */
+  .itile{position:relative;width:96px;height:96px;border-radius:12px;border:2px solid var(--accent);
+    background:#fff;display:grid;place-items:center}
+  .itile svg{width:58px;height:58px}
+  .ibadge{position:absolute;top:-8px;right:-8px;width:20px;height:20px;border-radius:999px;
+    background:#00509d;display:grid;place-items:center;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .ibadge span{color:#fff;font:italic 700 12px Georgia,serif}
+  .cap{font-size:12px;font-weight:600;text-align:center;color:var(--ink)}
+
+  .note{margin-top:18px;font-size:13px;color:var(--muted)}
+  .note code{background:#eef1f5;border:1px solid var(--line);border-radius:5px;padding:1px 6px;
+    font:12.5px ui-monospace,Consolas,monospace}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Advanced Multi-Voltage — matched to app style</h1>
+  <p class="sub">Same concept as the source icon (lightning bolt + "8&ndash;32 V"),
+  redrawn in the tile treatment already used by the authoring tool's
+  "Select vehicle" step: white tile, 2px cyan border, cyan/navy line-art, navy
+  info badge &mdash; instead of the source's dark-grey tile.</p>
+
+  <div class="row">
+    <div class="col">
+      <span class="tag">Matched to app style</span>
+      <div class="itile">
+        <svg viewBox="0 0 64 64" fill="none">
+          <text x="32" y="20" text-anchor="middle" font-size="10.5" font-weight="800" fill="#0b5cd5" font-family="-apple-system,Segoe UI,Roboto,sans-serif">8 &ndash; 32 V</text>
+          <path d="M35 25 L24 43 L30 43 L27 55 L43 36 L36 36 Z" fill="#1f9ed6"/>
+        </svg>
+        <span class="ibadge"><span>i</span></span>
+      </div>
+      <span class="cap">Advanced Multi-Voltage</span>
+    </div>
+  </div>
+
+  <p class="note">Built fresh (own path data) to match your source's layout and
+  wording &mdash; not a recolor of the original file, since its <code>.svg</code> is a
+  proprietary WABCO asset. Confirm this look and I'll apply the same treatment to the
+  rest of the feature-icon set and wire it into the authoring tool.</p>
+</div>
+</body>
+</html>
